@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target":                 "es5",
+    "module":                 "commonjs",
+    "sourceMap":              true,
+    "noImplicitAny":          true,
+    "removeComments":         true,
+    "outDir":                 "./dist/",
+    "pretty":                 true,
+    "experimentalDecorators": true,
+    "allowJs":                true,
+    "jsx":                    "react"
+  },
+  "include":         [
+    "src/frontend/**/*"
+  ],
+  "exclude":         [
+    "node_modules",
+    "dist/node_modules",
+    "**/*.spec.ts"
+  ]
+}

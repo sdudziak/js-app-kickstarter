@@ -13,7 +13,7 @@ module.exports = {
         loaders: [
             {
                 test:    /\.ts(x?)$/,
-                loaders: ['babel?plugins[]=transform-runtime', 'ts-loader'],
+                loaders: ['babel?plugins[]=transform-runtime', 'awesome-typescript-loader'],
                 exclude: /(node_modules|bower_components)/
             },
             {
@@ -43,5 +43,13 @@ module.exports = {
             'bootstrap-select/css': 'bootstrap-select/sass/bootstrap-select.scss'
         }
     },
-    watch:      true
+    watch:      true,
+    // When importing a module whose path matches one of the following, just
+    // assume a corresponding global variable exists and use that instead.
+    // This is important because it allows us to avoid bundling all of our
+    // dependencies, which allows browsers to cache those libraries between builds.
+    externals:  {
+        "react":     "React",
+        "react-dom": "ReactDOM"
+    },
 }

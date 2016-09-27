@@ -1,3 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 node_modules/
+/dist/
+.ctags
+.dockerignore
+.jshintrc
+.jshintrc-spec
+Dockerfile
+codeship-services.yml
+codeship-steps.yml
+docker-compose.yml

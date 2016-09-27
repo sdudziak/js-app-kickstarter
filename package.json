@@ -4,6 +4,8 @@
   "description": "Dockerized node-express app written in typescript",
   "main": "app.js",
   "dependencies": {
+    "@types/react": "^0.14.37",
+    "@types/react-dom": "^0.14.17",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "express": "^4.14.0",
@@ -16,9 +18,11 @@
     "method-override": "^2.3.6",
     "minimatch": "^3.0.3",
     "mongoose": "^4.6.1",
+    "nodemon": "^1.10.2",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "rx": "^4.1.0",
-    "vinyl-buffer": "^1.0.0",
-    "nodemon": "^1.10.2"
+    "vinyl-buffer": "^1.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.0.33",
@@ -39,6 +43,7 @@
     "@types/node": "^6.0.41",
     "@types/rx": "^2.5.32",
     "@types/serve-static": "^1.7.31",
+    "awesome-typescript-loader": "^2.2.4",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -95,7 +100,8 @@
   },
   "scripts": {
     "test": "karma start config/karma.config.js",
-    "start": "nodemon -L dist/app.js"
+    "build": "gulp",
+    "start": "nodemon -L dist/server.js"
   },
   "keywords": [
     "typescript",

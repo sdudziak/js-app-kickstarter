@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "outDir": "./dist/",
-    "pretty": true,
+    "target":                 "es6",
+    "module":                 "commonjs",
+    "outDir":                 "./dist/",
+    "jsx":                    "react",
+    "moduleResolution":       "node",
+    "sourceMap":              true,
+    "noImplicitAny":          true,
+    "removeComments":         true,
+    "pretty":                 true,
     "experimentalDecorators": true,
-    "allowJs": true,
-    "jsx": "react"
+    "emitDecoratorMetadata":  true
   },
-  "include": [
+  "include":         [
     "src/server/**/*"
   ]
 }

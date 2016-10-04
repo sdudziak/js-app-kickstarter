@@ -1,6 +1,5 @@
 var gulp        = require('gulp');
 var source      = require('vinyl-source-stream');
-var browserify  = require('browserify');
 var uglify      = require('gulp-uglify');
 var buffer      = require('vinyl-buffer');
 var notify      = require('gulp-notify');
@@ -8,7 +7,7 @@ var nodemon     = require('gulp-nodemon');
 var livereload  = require('gulp-livereload');
 var typescript  = require('gulp-typescript');
 var sass        = require('gulp-sass');
-var webpack     = require('gulp-webpack');
+var webpack     = require('webpack-stream');
 var browserSync = require('browser-sync');
 var superstatic = require('superstatic');
 
@@ -123,7 +122,7 @@ gulp.task(gulpConfig.tasks.common.watch, function () {
     //be care my friends, here nodemon runs from the current gulpfile's directory, because of this the: ext: 'ts'
     nodemon({
         // the script to run the app
-        script: gulpConfig.path.buildDest + '/server.js',
+        script: gulpConfig.path.buildDest + 'bootstrap.js',
         tasks:  [
             gulpConfig.tasks.backend.build,
             gulpConfig.tasks.backend.assets
@@ -139,7 +138,7 @@ gulp.task(gulpConfig.tasks.common.watch, function () {
         ]
     }).on('restart', function () {
         // when the app has restarted, run livereload.
-        gulp.src(gulpConfig.path.buildDest + '/server.js')
+        gulp.src(gulpConfig.path.buildDest + 'bootstrap.js')
             .pipe(livereload())
             .pipe(notify('Server restarted, reloading page...'));
     });

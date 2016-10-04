@@ -14,7 +14,7 @@ module.exports = {
             {
                 test:    /\.ts(x?)$/,
                 loaders: ['babel?plugins[]=transform-runtime', 'awesome-typescript-loader'],
-                exclude: /(node_modules|bower_components)/
+                exclude: /(node_modules)/
             },
             {
                 test:    /\.scss$/,

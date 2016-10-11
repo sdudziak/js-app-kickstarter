@@ -11,5 +11,6 @@ export class UserController {
     public get(): string {
         return 'My sweet users';
     }
+
 }
 

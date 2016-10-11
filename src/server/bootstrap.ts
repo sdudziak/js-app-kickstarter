@@ -3,7 +3,6 @@ import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
-import * as cusrf from 'csurf';
 import * as cookieParser from 'cookie-parser';
 import { kernel } from './ioc/ioc';
 import * as config from './config/index';
@@ -12,26 +11,21 @@ import * as config from './config/index';
 // load all injectable entities.
 // the @provide() annotation will then automatically register them.
 import './ioc/loader';
+import TYPES from './constant/types';
+import { AuthenticationServiceInterface } from './services/authentication/AuthenticationServiceInterface';
 
 // start the server
-let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
+let server: interfaces.InversifyExpressServer   = new InversifyExpressServer(kernel);
+let authService: AuthenticationServiceInterface = kernel
+    .get<AuthenticationServiceInterface>(TYPES.AuthenticationServiceInterface);
 
 server.setConfig((app) => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(helmet());
-    app.use(cusrf());
     app.use(cookieParser());
+    console.log(authService);
     app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
-
-    app.use((err: any, req: express.Request, res: express.Response, next: Function) => {
-        if (err.code !== 'EBADCSRFTOKEN') { return next(err); }
-
-        // handle CSRF token errors here
-        res.status(403);
-        res.send('form tampered with');
-    })
-
 });
 
 let app = server.build();

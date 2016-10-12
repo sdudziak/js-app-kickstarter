@@ -12,12 +12,12 @@ import * as config from './config/index';
 // the @provide() annotation will then automatically register them.
 import './ioc/loader';
 import TYPES from './constant/types';
-import { AuthenticationServiceInterface } from './services/authentication/AuthenticationServiceInterface';
+import { IAuthenticationService } from './services/authentication/IAuthenticationService';
 
 // start the server
-let server: interfaces.InversifyExpressServer   = new InversifyExpressServer(kernel);
-let authService: AuthenticationServiceInterface = kernel
-    .get<AuthenticationServiceInterface>(TYPES.AuthenticationServiceInterface);
+let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
+let authService: IAuthenticationService       = kernel
+    .get<IAuthenticationService>(TYPES.IAuthenticationService);
 
 server.setConfig((app) => {
     app.use(bodyParser.urlencoded({ extended: true }));

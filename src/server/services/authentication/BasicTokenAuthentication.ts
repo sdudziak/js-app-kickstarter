@@ -1,9 +1,9 @@
-import { AuthenticationServiceInterface } from './AuthenticationServiceInterface';
+import { IAuthenticationService } from './IAuthenticationService';
 import TYPES from '../../constant/types';
 import { provide } from '../../ioc/ioc';
 
-@provide(TYPES.AuthenticationServiceInterface)
-export class BasicTokenAuthentication implements AuthenticationServiceInterface {
+@provide(TYPES.IAuthenticationService)
+export class BasicTokenAuthentication implements IAuthenticationService {
 
     public isAuthenticated(): boolean {
         return true;

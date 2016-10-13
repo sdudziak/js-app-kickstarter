@@ -2,7 +2,10 @@ import { Db, ObjectID } from 'mongodb';
 import { IPersistenceClient } from '../IPersistenceClient';
 import { IIdentifable } from '../../../model/IIdentifable';
 import { MongoDBConnection } from './connection';
+import TYPES from '../../../constant/types';
+import { provide } from '../../../ioc/ioc';
 
+@provide(TYPES.IPersistenceClient)
 export class MongoPersistenceClient<T extends IIdentifable> implements IPersistenceClient<T> {
 
     protected db: Db;

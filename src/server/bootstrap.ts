@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import { kernel } from './ioc/ioc';
-import * as config from './config/index';
+import * as config from './config';
 
 
 // load all injectable entities.

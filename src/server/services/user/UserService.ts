@@ -54,7 +54,7 @@ export class UserService implements IUserService {
 
     public updateUser(user: User): Promise<User> {
         return new Promise<User>((resolve, reject) => {
-            this.mongo.update(UserService.COLLECTION_NAME, user.id, user, (error: Error, data: User) => {
+            this.mongo.update(UserService.COLLECTION_NAME, user.id, user.toPersistenceNative, (error: Error, data: User) => {
                 error ? reject(error) : resolve(data);
             });
         });

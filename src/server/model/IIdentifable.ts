@@ -1,3 +1,5 @@
-export interface IIdentifable {
-    getId(): string;
+import { ObjectID } from 'mongodb';
+
+export interface IIdentifiable {
+    id: ObjectID;
 }

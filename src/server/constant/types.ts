@@ -1,5 +1,5 @@
 const TYPES = {
-    IAuthenticationService: Symbol('BasicTokenAuthentication'),
+    IAuthenticationService: Symbol('PassportAuthentication'),
     IPersistenceClient:     Symbol('MongoPersistenceClient'),
     User:                   Symbol('User'),
     UserService:            Symbol('UserService'),

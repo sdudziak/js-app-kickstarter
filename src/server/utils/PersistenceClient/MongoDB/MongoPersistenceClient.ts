@@ -1,12 +1,12 @@
 import { Db, ObjectID } from 'mongodb';
 import { IPersistenceClient } from '../IPersistenceClient';
-import { IIdentifable } from '../../../model/IIdentifable';
+import { IIdentifiable } from '../../../model/IIdentifable';
 import { MongoDBConnection } from './connection';
 import TYPES from '../../../constant/types';
 import { provide } from '../../../ioc/ioc';
 
 @provide(TYPES.IPersistenceClient)
-export class MongoPersistenceClient<T extends IIdentifable> implements IPersistenceClient<T> {
+export class MongoPersistenceClient<T extends IIdentifiable> implements IPersistenceClient<T> {
 
     protected db: Db;
 
@@ -24,11 +24,11 @@ export class MongoPersistenceClient<T extends IIdentifable> implements IPersiste
             });
     }
 
-    public findOneById(collection: string, objectId: string, result: (error: any, data: any)=>void): void {
+    public findOneById(collection: string, objectId: ObjectID, result: (error: any, data: any)=>void): void {
         this
             .db
             .collection(collection)
-            .find({ _id: new ObjectID(objectId) })
+            .find({ _id: objectId })
             .limit(1)
             .toArray((error, find) => {
                 return result(error, find[0]);
@@ -44,20 +44,20 @@ export class MongoPersistenceClient<T extends IIdentifable> implements IPersiste
             });
     }
 
-    public update(collection: string, objectId: string, model: T, result: (error: any, data: any)=>void): void {
+    public update(collection: string, objectId: ObjectID, model: T, result: (error: any, data: any)=>void): void {
         this
             .db
             .collection(collection)
-            .updateOne({ _id: new ObjectID(objectId) }, model, (error, update) => {
+            .updateOne({ _id: objectId }, model, (error, update) => {
                 return result(error, model);
             });
     }
 
-    public remove(collection: string, objectId: string, result: (error: any, data: any)=>void): void {
+    public remove(collection: string, objectId: ObjectID, result: (error: any, data: any)=>void): void {
         this
             .db
             .collection(collection)
-            .deleteOne({ _id: new ObjectID(objectId) }, (error, remove) => {
+            .deleteOne({ _id: objectId }, (error, remove) => {
                 return result(error, remove);
             });
     }

@@ -1,6 +1,7 @@
 const TAGS = {
     IndexController: 'IndexController',
-    UserController: 'UserController'
+    UserController:  'UserController',
+    LoginController: 'LoginController'
 };
 
 export default TAGS;

@@ -3,7 +3,9 @@ import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
+import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
+import expressSession = require('express-session');
 import { kernel } from './ioc/ioc';
 import * as config from './config';
 
@@ -24,7 +26,16 @@ server.setConfig((app) => {
     app.use(bodyParser.json());
     app.use(helmet());
     app.use(cookieParser());
-    console.log(authService);
+    app.use(expressSession({
+        secret:            config.app.secret,
+        resave:            false,
+        saveUninitialized: false
+    }));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    authService.setProvider(passport);
     app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
 });
 

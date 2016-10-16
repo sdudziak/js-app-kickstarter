@@ -16,6 +16,10 @@ const config = <any> {
         host:     'localhost',
         port:     8080,
         app:      Error("Define me"),
+    },
+
+    app: {
+        secret: '97giabg9gabsdf97[g4gtqt40gaovbd(&FWEVF*^YVPFEV_$FW*ER_$#GT$&G(EBAGF(&SRB$)*T$'
     }
 };
 

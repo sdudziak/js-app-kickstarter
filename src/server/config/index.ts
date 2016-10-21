@@ -24,7 +24,7 @@ const config = <any> {
 };
 
 config.url.app = config.url.protocol + '://' +
-                 config.url.host + ':' +
-                 config.url.port + '/';
+    config.url.host + ':' +
+    config.url.port + '/';
 
 export = config;

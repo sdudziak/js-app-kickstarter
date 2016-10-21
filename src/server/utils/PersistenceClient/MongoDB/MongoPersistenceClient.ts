@@ -28,7 +28,7 @@ export class MongoPersistenceClient<T extends IIdentifiable> implements IPersist
         this
             .db
             .collection(collection)
-            .find({ _id: objectId })
+            .find({_id: objectId})
             .limit(1)
             .toArray((error, find) => {
                 return result(error, find[0]);
@@ -48,7 +48,7 @@ export class MongoPersistenceClient<T extends IIdentifiable> implements IPersist
         this
             .db
             .collection(collection)
-            .updateOne({ _id: objectId }, model, (error, update) => {
+            .updateOne({_id: objectId}, model, (error, update) => {
                 return result(error, model);
             });
     }
@@ -57,7 +57,7 @@ export class MongoPersistenceClient<T extends IIdentifiable> implements IPersist
         this
             .db
             .collection(collection)
-            .deleteOne({ _id: objectId }, (error, remove) => {
+            .deleteOne({_id: objectId}, (error, remove) => {
                 return result(error, remove);
             });
     }

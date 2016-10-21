@@ -9,7 +9,6 @@ import expressSession = require('express-session');
 import { kernel } from './ioc/ioc';
 import * as config from './config';
 
-
 // load all injectable entities.
 // the @provide() annotation will then automatically register them.
 import './ioc/loader';
@@ -22,7 +21,7 @@ let authService: IAuthenticationService       = kernel
     .get<IAuthenticationService>(TYPES.IAuthenticationService);
 
 server.setConfig((app) => {
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(helmet());
     app.use(cookieParser());

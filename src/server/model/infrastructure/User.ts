@@ -2,7 +2,6 @@ import { IIdentifiable } from '../IIdentifable';
 import { ObjectID } from 'mongodb';
 import { IPersistable } from '../IPersistable';
 
-
 export class User implements IIdentifiable, IPersistable {
 
     private _id: ObjectID;

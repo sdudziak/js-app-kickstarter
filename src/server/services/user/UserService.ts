@@ -53,6 +53,17 @@ export class UserService implements IUserService {
         );
     }
 
+    public getUserByName(name: string): Promise<User> {
+        return new Promise<User>((resolve, reject) =>
+            this.mongo.find(UserService.COLLECTION_NAME, {
+                       name,
+                limit: 1
+            }, (error: Error, data: User) => {
+                error ? reject(error) : resolve(data);
+            })
+        );
+    }
+
     public newUser(user: User): Promise<User> {
         return new Promise<User>((resolve, reject) => {
             this.mongo.insert(UserService.COLLECTION_NAME, user.toPersistenceNative, (error: Error, data: User) => {

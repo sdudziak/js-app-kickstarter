@@ -5,6 +5,7 @@ export interface IUserService {
     isUserPasswordValid(password: string, user: User): boolean;
     getUsers(filter: any, limit: number, skip: number): Promise<User[]>
     getUserByMail(mail: string): Promise<User>
+    getUserByName(name: string): Promise<User>
     getUserById(id: string): Promise<User>
     newUser(user: User): Promise<User>
     updateUser(user: User): Promise<User>

@@ -13,7 +13,7 @@ export class PassportAuthentication implements IAuthenticationService {
     private passport: any;
     private strategies: {[name: string]: IStrategy};
 
-    private addAuthStrategy(anStrategy: IStrategy) {
+    public addAuthStrategy(anStrategy: IStrategy) {
         if (this.strategies[anStrategy.name()]) {
             throw new Error('You\'re trying to add ' + anStrategy.name() + ' second time!');
         }

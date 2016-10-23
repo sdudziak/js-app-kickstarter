@@ -5,6 +5,7 @@ import { IPersistenceClient } from '../../utils/PersistenceClient/IPersistenceCl
 import TYPES from '../../constant/types';
 
 import { provide, inject } from '../../ioc/ioc';
+import { ObjectID } from 'mongodb';
 
 @provide(TYPES.UserService)
 export class UserService implements IUserService {
@@ -26,22 +27,30 @@ export class UserService implements IUserService {
     public getUsers(filter: any = {}, limit: number = 10, skip: number = 0): Promise<User[]> {
         filter['$skip']  = skip;
         filter['$limit'] = limit;
-        return new Promise<User[]>((resolve, reject) => {
-            this.mongo.find(UserService.COLLECTION_NAME, filter, (error: Error, data: User[]) => {
-                error ? reject(error) : resolve(data);
-            });
-        });
+        return new Promise<User[]>((resolve, reject) =>
+            this.mongo.find(UserService.COLLECTION_NAME, filter, (error: Error, data: User[]) =>
+                error ? reject(error) : resolve(data)
+            )
+        );
+    }
+
+    public getUserById(id: string): Promise<User> {
+        return new Promise<User>((resolve, reject) =>
+            this.mongo.findOneById(UserService.COLLECTION_NAME, new ObjectID(id), (error: Error, data: User) =>
+                error ? reject(error) : resolve(data)
+            )
+        );
     }
 
     public getUserByMail(mail: string): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
+        return new Promise<User>((resolve, reject) =>
             this.mongo.find(UserService.COLLECTION_NAME, {
                        mail,
                 limit: 1
             }, (error: Error, data: User) => {
                 error ? reject(error) : resolve(data);
-            });
-        });
+            })
+        );
     }
 
     public newUser(user: User): Promise<User> {

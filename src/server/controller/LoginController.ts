@@ -44,7 +44,7 @@ export class LoginController {
 
         this.userService
             .getUserByName(name)
-            .then((user: User) => this.authenticationService.authenticate(User, passwordHash))
+            .then((user: User) => this.authenticationService.authenticate(user, passwordHash))
             .then((token: Token) => res.json({ message: "ok", token: token.toJson() }))
             .catch((reason) => res.status(401).json({ message: "Cannot log in. Reason: " + reason.toString() }));
     }

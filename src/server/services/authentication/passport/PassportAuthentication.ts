@@ -40,10 +40,10 @@ export class PassportAuthentication implements IAuthenticationService {
             }
 
             const payload: { id: string, expireAt: number } = {
-                id:       user.id.toString(),
+                id:       user.id.toHexString(),
                 expireAt: Date.now() + config.app.tokenLifetime
             };
-            const token                                     = jwt.sign(payload, config.app.secret);
+            const token = jwt.sign(payload, config.app.secret);
 
             resolve(new Token(payload, token));
         });

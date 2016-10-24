@@ -7,7 +7,7 @@ import TYPES from '../../constant/types';
 import { provide, inject } from '../../ioc/ioc';
 import { ObjectID } from 'mongodb';
 
-@provide(TYPES.UserService)
+@provide(TYPES.IUserService)
 export class UserService implements IUserService {
 
     private static COLLECTION_NAME = 'user';

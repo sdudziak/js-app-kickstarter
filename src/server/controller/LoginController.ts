@@ -1,6 +1,5 @@
 import { Controller, Get, Post, TYPE } from 'inversify-express-utils';
 import * as express from 'express';
-import * as jwt from 'jsonwebtoken';
 
 import { provideNamed, inject } from '../ioc/ioc';
 import TAGS from '../constant/tags';
@@ -9,7 +8,8 @@ import { csrfProtection } from '../middleware/csrfProtection';
 import TYPES from '../constant/types';
 import { IUserService } from '../services/user/IUserService';
 import { User } from '../model/infrastructure/User';
-import * as config from '../config/index'
+import { IAuthenticationService } from '../services/authentication/IAuthenticationService';
+import { Token } from '../services/authentication/model/Token';
 
 @provideNamed(TYPE.Controller, TAGS.LoginController)
 @Controller(ROUTES.authenticate, csrfProtection)
@@ -21,9 +21,12 @@ export class LoginController {
     };
 
     private userService: IUserService;
+    private authenticationService: IAuthenticationService;
 
-    public constructor(@inject(TYPES.UserService) userService: IUserService) {
-        this.userService = userService;
+    public constructor(@inject(TYPES.IUserService) userService: IUserService,
+                       @inject(TYPES.IAuthenticationService) authenticationService: IAuthenticationService) {
+        this.userService           = userService;
+        this.authenticationService = authenticationService;
     }
 
     @Get(LoginController.ACTION.login)
@@ -41,18 +44,9 @@ export class LoginController {
 
         this.userService
             .getUserByName(name)
-            .then((user: User) => {
-                if (user.passwordHash !== passwordHash) {
-                    throw new Error("password did not match");
-                }
-                const payload: {id: string} = { id: user.id.toString() };
-                const token                 = jwt.sign(payload, config.app.secret);
-
-                res.json({ message: "ok", token: token });
-            })
-            .catch((reason) =>
-                res.status(401).json({ message: "Cannot log in. Reason: " + reason.toString() })
-            );
+            .then((user: User) => this.authenticationService.authenticate(User, passwordHash))
+            .then((token: Token) => res.json({ message: "ok", token: token.toJson() }))
+            .catch((reason) => res.status(401).json({ message: "Cannot log in. Reason: " + reason.toString() }));
     }
 
     @Post(LoginController.ACTION.signup, csrfProtection)

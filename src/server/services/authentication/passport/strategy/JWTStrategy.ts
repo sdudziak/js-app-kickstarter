@@ -15,7 +15,7 @@ export class JwtStrategy implements IStrategy {
     private userService: IUserService;
     private strategy: PassportJwtStrategy;
 
-    public constructor(@inject(TYPES.UserService) userService: IUserService) {
+    public constructor(@inject(TYPES.IUserService) userService: IUserService) {
         this.userService = userService;
         this._options    = {
             jwtFromRequest: ExtractJwt.fromAuthHeader(),

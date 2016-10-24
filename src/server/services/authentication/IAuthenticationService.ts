@@ -1,7 +1,8 @@
-import { Handler } from 'express-serve-static-core';
+import { User } from '../../model/infrastructure/User';
+import { Token } from './model/Token';
 
 export interface IAuthenticationService {
     isAuthenticated(): Function;
     setProvider(provider: any): void
-    authenticate(strategy: string, configuration: any, callback: Function): Handler;
+    authenticate(user: User, providedPasswordHash: string): Promise<Token>;
 }

@@ -19,7 +19,8 @@ const config = <any> {
     },
 
     app: {
-        secret: '97giabg9gabsdf97[g4gtqt40gaovbd(&FWEVF*^YVPFEV_$FW*ER_$#GT$&G(EBAGF(&SRB$)*T$'
+        secret: '97giabg9gabsdf97[g4gtqt40gaovbd(&FWEVF*^YVPFEV_$FW*ER_$#GT$&G(EBAGF(&SRB$)*T$',
+        tokenLifetime: 2592000000 // 1 month in milliseconds
     }
 };
 

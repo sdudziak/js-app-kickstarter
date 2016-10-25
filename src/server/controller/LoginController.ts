@@ -16,8 +16,8 @@ import { Token } from '../services/authentication/model/Token';
 export class LoginController {
 
     public static ACTION = {
-        signup: '/signup',
-        login:  '/'
+        subscribe: '/subscribe',
+        login:     '/'
     };
 
     private userService: IUserService;
@@ -25,11 +25,11 @@ export class LoginController {
 
     public constructor(@inject(TYPES.IUserService) userService: IUserService,
                        @inject(TYPES.IAuthenticationService) authenticationService: IAuthenticationService) {
-        this.userService           = userService;
+        this.userService = userService;
         this.authenticationService = authenticationService;
     }
 
-    @Get(LoginController.ACTION.login)
+    @Post(LoginController.ACTION.login)
     public login(req: express.Request, res: express.Response): void {
 
         if (!req.body.name || !req.body.password) {
@@ -39,7 +39,7 @@ export class LoginController {
             return;
         }
 
-        const name: string         = req.body.name;
+        const name: string = req.body.name;
         const passwordHash: string = this.userService.generateHash(req.body.password);
 
         this.userService
@@ -49,9 +49,19 @@ export class LoginController {
             .catch((reason) => res.status(401).json({ message: "Cannot log in. Reason: " + reason.toString() }));
     }
 
-    @Post(LoginController.ACTION.signup, csrfProtection)
-    public abc(req: express.Request): string {
-        return 'you need token to access here';
+    @Post(LoginController.ACTION.subscribe, csrfProtection)
+    public subscribe(req: express.Request): void {
+
+        const name: string = req.body.name;
+        const mail: string = req.body.mail;
+        const passwordHash1: string = this.userService.generateHash(req.body.password1);
+        const passwordHash2: string = this.userService.generateHash(req.body.password2);
+
+        // validate input
+        // check if there is any user for given name.
+        // create new user with provided data;
+        // return info so user can proceed and log in.
+        // set DDoS protection for this action, to prevent brute-force
     }
 }
 

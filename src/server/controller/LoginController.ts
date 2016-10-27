@@ -50,12 +50,43 @@ export class LoginController {
     }
 
     @Post(LoginController.ACTION.subscribe, csrfProtection)
-    public subscribe(req: express.Request): void {
+    public subscribe(req: express.Request, res: express.Response): void {
 
         const name: string = req.body.name;
         const mail: string = req.body.mail;
-        const passwordHash1: string = this.userService.generateHash(req.body.password1);
-        const passwordHash2: string = this.userService.generateHash(req.body.password2);
+        const passwordHash: string = this.userService.generateHash(req.body.password);
+
+        this.userService
+            .getUserByMail(mail)
+            .then((user: User | null) => {
+                if (user) {
+                    throw new Error("User with provided mail already exists");
+                }
+                return true;
+            })
+            .then(() => this.userService.getUserByName(name))
+            .then((user: User | null) => {
+                if (user) {
+                    throw new Error("User with provided name already exists");
+                }
+                return true;
+            })
+            .then(()=> {
+                let user: User = new User(name, mail, passwordHash);
+                return this.userService.newUser(user);
+            })
+            .then((user: User) => res.status(200).json({
+                message: "User created",
+                user:    {
+                    id:   user.id,
+                    name: user.name,
+                    mail: user.mail
+                }
+
+            }))
+            .catch((reason: Error) => res.status(401).json({
+                message: "Cannot create account. Reason: " + reason.toString()
+            }));
 
         // validate input
         // check if there is any user for given name.

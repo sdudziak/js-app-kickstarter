@@ -10,6 +10,12 @@ export class User implements IIdentifiable, IPersistable {
     private _passwordHash: string;
     private _passwordSalt: string;
 
+    public constructor(name: string, mail: string, passwordHash: string) {
+        this.name = name;
+        this.mail = mail;
+        this.passwordHash = passwordHash;
+    }
+
     public get id(): ObjectID {
         return this._id;
     }

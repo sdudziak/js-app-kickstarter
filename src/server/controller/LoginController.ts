@@ -10,23 +10,28 @@ import { IUserService } from '../services/user/IUserService';
 import { User } from '../model/infrastructure/User';
 import { IAuthenticationService } from '../services/authentication/IAuthenticationService';
 import { Token } from '../services/authentication/model/Token';
+import { ICryptographicService } from '../services/cryptographic/ICryptographicService';
 
 @provideNamed(TYPE.Controller, TAGS.LoginController)
 @Controller(ROUTES.authenticate, csrfProtection)
 export class LoginController {
 
     public static ACTION = {
-        subscribe: '/subscribe',
+        subscribe: '/signup',
         login:     '/'
     };
 
     private userService: IUserService;
     private authenticationService: IAuthenticationService;
+    private cryptographicService: ICryptographicService;
 
     public constructor(@inject(TYPES.IUserService) userService: IUserService,
-                       @inject(TYPES.IAuthenticationService) authenticationService: IAuthenticationService) {
+                       @inject(TYPES.IAuthenticationService) authenticationService: IAuthenticationService,
+                       @inject(TYPES.ICryptographicService) cryptographicService: ICryptographicService) {
+
         this.userService = userService;
         this.authenticationService = authenticationService;
+        this.cryptographicService = cryptographicService;
     }
 
     @Post(LoginController.ACTION.login)
@@ -39,14 +44,18 @@ export class LoginController {
             return;
         }
 
-        const name: string = req.body.name;
-        const passwordHash: string = this.userService.generateHash(req.body.password);
-
         this.userService
-            .getUserByName(name)
-            .then((user: User) => this.authenticationService.authenticate(user, passwordHash))
+            .getUserByName(req.body.name)
+            .then((user: User) =>
+                this.cryptographicService.isPasswordValid(req.body.password, user.passwordHash) ?
+                    user : Error("Invalid password")
+            )
+            .then((user: User) => this.authenticationService.authenticate(user))
             .then((token: Token) => res.json({ message: "ok", token: token.toJson() }))
-            .catch((reason) => res.status(401).json({ message: "Cannot log in. Reason: " + reason.toString() }));
+            .catch((reason) => res.status(401).json({
+                message: "Cannot log in. Reason: " + reason.toString(),
+                details: reason
+            }));
     }
 
     @Post(LoginController.ACTION.subscribe, csrfProtection)
@@ -54,11 +63,12 @@ export class LoginController {
 
         const name: string = req.body.name;
         const mail: string = req.body.mail;
-        const passwordHash: string = this.userService.generateHash(req.body.password);
+        const passwordHash: string = this.cryptographicService.generateHash(req.body.password);
 
         this.userService
             .getUserByMail(mail)
             .then((user: User | null) => {
+                console.log(user);
                 if (user) {
                     throw new Error("User with provided mail already exists");
                 }
@@ -71,14 +81,11 @@ export class LoginController {
                 }
                 return true;
             })
-            .then(()=> {
-                let user: User = new User(name, mail, passwordHash);
-                return this.userService.newUser(user);
-            })
+            .then(()=> this.userService.newUser(new User(name, mail, passwordHash)))
             .then((user: User) => res.status(200).json({
                 message: "User created",
                 user:    {
-                    id:   user.id,
+                    id:   user._id,
                     name: user.name,
                     mail: user.mail
                 }
@@ -89,9 +96,6 @@ export class LoginController {
             }));
 
         // validate input
-        // check if there is any user for given name.
-        // create new user with provided data;
-        // return info so user can proceed and log in.
         // set DDoS protection for this action, to prevent brute-force
     }
 }

@@ -4,7 +4,7 @@ import { IPersistable } from '../IPersistable';
 
 export class User implements IIdentifiable, IPersistable {
 
-    private _id: ObjectID;
+    public _id: ObjectID;
     private _mail: string;
     private _name: string;
     private _passwordHash: string;
@@ -58,6 +58,7 @@ export class User implements IIdentifiable, IPersistable {
 
     public get toPersistenceNative(): any {
         return {
+            _id:          this._id,
             id:           this.id,
             mail:         this.mail,
             name:         this.name,

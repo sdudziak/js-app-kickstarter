@@ -1,6 +1,6 @@
 const ROUTES = {
     app:          '/',
     user:         '/user',
-    authenticate: '/authenticate'
+    authenticate: '/login'
 };
 export default ROUTES;

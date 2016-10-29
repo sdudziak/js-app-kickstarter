@@ -4,5 +4,5 @@ import { Token } from './model/Token';
 export interface IAuthenticationService {
     isAuthenticated(): Function;
     setProvider(provider: any): void
-    authenticate(user: User, providedPasswordHash: string): Promise<Token>;
+    authenticate(user: User): Promise<Token>;
 }

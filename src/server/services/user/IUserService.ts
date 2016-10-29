@@ -1,8 +1,6 @@
 import { User } from '../../model/infrastructure/User';
 
 export interface IUserService {
-    generateHash(password: string): string;
-    isUserPasswordValid(password: string, user: User): boolean;
     getUsers(filter: any, limit: number, skip: number): Promise<User[]>
     getUserByMail(mail: string): Promise<User>
     getUserByName(name: string): Promise<User>

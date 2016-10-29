@@ -1,9 +1,9 @@
 const config = <any> {
     mongo: <any> {
         host:     '127.0.0.1',
-        port:     21017,
-        login:    null,
-        password: null,
+        port:     27017,
+        login:    'crimeAlert',
+        password: 'abcdef',
         database: 'crime-alert'
     },
 
@@ -15,7 +15,6 @@ const config = <any> {
         protocol: 'http',
         host:     'localhost',
         port:     8080,
-        app:      Error("Define me"),
     },
 
     app: {

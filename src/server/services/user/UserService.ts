@@ -1,31 +1,21 @@
-import { IUserService } from './IUserService';
-import * as bcrypt from 'bcrypt-nodejs';
-import { User } from '../../model/infrastructure/User';
-import { IPersistenceClient } from '../../utils/PersistenceClient/IPersistenceClient';
-import TYPES from '../../constant/types';
-
-import { provide, inject } from '../../ioc/ioc';
 import { ObjectID } from 'mongodb';
+
+import { IPersistenceClient } from '../../utils/PersistenceClient/IPersistenceClient';
+import { IUserService } from './IUserService';
+import TYPES from '../../constant/types';
+import { User } from '../../model/infrastructure/User';
+import { provide, inject } from '../../ioc/ioc';
 
 @provide(TYPES.IUserService)
 export class UserService implements IUserService {
 
-    private static COLLECTION_NAME = 'user';
+    private static COLLECTION_NAME = 'users';
 
     constructor(@inject(TYPES.IPersistenceClient) private mongo: IPersistenceClient<User>) {
-
-    }
-
-    public generateHash(password: string): string {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-    }
-
-    public isUserPasswordValid(password: string, user: User): boolean {
-        return bcrypt.compareSync(password, user.passwordHash);
     }
 
     public getUsers(filter: any = {}, limit: number = 10, skip: number = 0): Promise<User[]> {
-        filter['$skip']  = skip;
+        filter['$skip'] = skip;
         filter['$limit'] = limit;
         return new Promise<User[]>((resolve, reject) =>
             this.mongo.find(UserService.COLLECTION_NAME, filter, (error: Error, data: User[]) =>
@@ -44,23 +34,23 @@ export class UserService implements IUserService {
 
     public getUserByMail(mail: string): Promise<User> {
         return new Promise<User>((resolve, reject) =>
-            this.mongo.find(UserService.COLLECTION_NAME, {
-                       mail,
-                limit: 1
-            }, (error: Error, data: User) => {
-                error ? reject(error) : resolve(data);
-            })
+            this.mongo.findOne(
+                UserService.COLLECTION_NAME,
+                { mail },
+                (error: Error, data: User) => {
+                    error ? reject(error) : resolve(data);
+                })
         );
     }
 
     public getUserByName(name: string): Promise<User> {
         return new Promise<User>((resolve, reject) =>
-            this.mongo.find(UserService.COLLECTION_NAME, {
-                       name,
-                limit: 1
-            }, (error: Error, data: User) => {
-                error ? reject(error) : resolve(data);
-            })
+            this.mongo.findOne(
+                UserService.COLLECTION_NAME,
+                { name },
+                (error: Error, data: User) => {
+                    error ? reject(error) : resolve(data);
+                })
         );
     }
 

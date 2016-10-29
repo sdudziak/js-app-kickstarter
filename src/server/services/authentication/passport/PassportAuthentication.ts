@@ -4,11 +4,11 @@ import { provide } from '../../../ioc/ioc';
 import ROUTES from '../../../config/routes';
 import * as jwt from 'jsonwebtoken';
 import * as config from '../../../config/index'
-import passport = require('passport');
 import { IStrategy } from './strategy/IStrategy';
 import { User } from '../../../model/infrastructure/User';
 import { Token } from '../model/Token';
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+import passport = require('passport');
 
 @provide(TYPES.IAuthenticationService)
 export class PassportAuthentication implements IAuthenticationService {
@@ -32,15 +32,10 @@ export class PassportAuthentication implements IAuthenticationService {
         this.passport = provider;
     }
 
-    public authenticate(user: User, providedPasswordHash: string): Promise<Token> {
-        return new Promise((resolve: Function, reject: Function) => {
-
-            if (user.passwordHash !== providedPasswordHash) {
-                reject(new Error("password did not match"));
-            }
-
+    public authenticate(user: User): Promise<Token> {
+        return new Promise((resolve: Function) => {
             const payload: { id: string, expireAt: number } = {
-                id:       user.id.toHexString(),
+                id:       user._id.toHexString(),
                 expireAt: Date.now() + config.app.tokenLifetime
             };
             const token = jwt.sign(payload, config.app.secret);

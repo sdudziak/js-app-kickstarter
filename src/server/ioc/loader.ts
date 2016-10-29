@@ -6,6 +6,7 @@ import '../controller/LoginController';
 // services
 import '../services/authentication/passport/PassportAuthentication';
 import '../services/user/UserService';
+import '../services/cryptographic/Cryptographic';
 
 // utils
 import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';

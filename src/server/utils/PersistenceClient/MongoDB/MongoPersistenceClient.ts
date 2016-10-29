@@ -35,6 +35,17 @@ export class MongoPersistenceClient<T extends IIdentifiable> implements IPersist
             });
     }
 
+    public findOne(collection: string, filter: Object, result: (error: any, data: any)=>void): void {
+        this
+            .db
+            .collection(collection)
+            .find(filter)
+            .limit(1)
+            .toArray((error, find) => {
+                return result(error, find[0]);
+            });
+    }
+
     public insert(collection: string, model: T, result: (error: any, data: any)=>void): void {
         this
             .db

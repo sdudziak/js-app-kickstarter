@@ -6,25 +6,24 @@ import { IStrategy } from './IStrategy';
 import { User } from '../../../../model/infrastructure/User'
 import TYPES from '../../../../constant/types';
 import { IUserService } from '../../../user/IUserService';
-import { inject } from '../../../../ioc/ioc'
+import { provide, kernel } from '../../../../ioc/ioc'
 import * as config from '../../../../config/index';
 
+@provide(TYPES.IStrategy)
 export class JwtStrategy implements IStrategy {
 
     private _options: any;
-    private userService: IUserService;
     private strategy: PassportJwtStrategy;
 
-    public constructor(@inject(TYPES.IUserService) userService: IUserService) {
-        this.userService = userService;
-        this._options    = {
+    public constructor() {
+        this._options = {
             jwtFromRequest: ExtractJwt.fromAuthHeader(),
             secretOrKey:    config.app.secret
         };
     }
 
     public name(): string {
-        return 'local-signup';
+        return 'jwt';
     }
 
     public options(): any {
@@ -35,9 +34,12 @@ export class JwtStrategy implements IStrategy {
         done(null, user.id.toString());
     }
 
-    public strategyHandler(payload: any, next: Function): void {
-        console.log('payload received', payload);
-        var user = this.userService.getUserById(payload.id);
+    public strategyHandler(payload: { id: string, expireAt: number }, next: Function): void {
+        if (payload.expireAt < Date.now()) {
+            return next(null, false);
+        }
+        const userService = kernel.get<IUserService>(TYPES.IUserService);
+        var user = userService.getUserById(payload.id);
         user ? next(null, user) : next(null, false);
     }
 

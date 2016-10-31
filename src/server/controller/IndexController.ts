@@ -3,10 +3,9 @@ import * as express from 'express';
 import { provideNamed } from '../ioc/ioc';
 import TAGS from '../constant/tags';
 import ROUTES from '../config/routes';
-import { csrfProtection } from '../middleware/csrfProtection';
 
 @provideNamed(TYPE.Controller, TAGS.IndexController)
-@Controller(ROUTES.app, csrfProtection)
+@Controller(ROUTES.app)
 export class IndexController {
 
     @Get('/')
@@ -14,7 +13,7 @@ export class IndexController {
         return 'Home sweet home ' + req.csrfToken();
     }
 
-    @Post('/abc', csrfProtection)
+    @Post('/abc')
     public abc(req: express.Request): string {
         return 'you need token to access here';
     }

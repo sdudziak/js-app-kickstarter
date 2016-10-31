@@ -1,10 +1,10 @@
 import { ICryptographicService } from './ICryptographicService';
-import { provide } from '../../ioc/ioc';
+import { provideSingleton } from '../../ioc/ioc';
 import TYPES from '../../constant/types';
 
 import * as bcrypt from 'bcrypt-nodejs';
 
-@provide(TYPES.ICryptographicService)
+@provideSingleton(TYPES.ICryptographicService)
 export class Cryptographic implements ICryptographicService {
 
     public generateHash(password: string): string {

@@ -4,14 +4,17 @@ import { IPersistenceClient } from '../../utils/PersistenceClient/IPersistenceCl
 import { IUserService } from './IUserService';
 import TYPES from '../../constant/types';
 import { User } from '../../model/infrastructure/User';
-import { provide, inject } from '../../ioc/ioc';
+import { inject, provideSingleton } from '../../ioc/ioc';
 
-@provide(TYPES.IUserService)
+@provideSingleton(TYPES.IUserService)
 export class UserService implements IUserService {
 
     private static COLLECTION_NAME = 'users';
+    private mongo: IPersistenceClient<User>;
 
-    constructor(@inject(TYPES.IPersistenceClient) private mongo: IPersistenceClient<User>) {
+    constructor(@inject(TYPES.IPersistenceClient) mongo: IPersistenceClient<User>) {
+        console.log('User service created');
+        this.mongo = mongo;
     }
 
     public getUsers(filter: any = {}, limit: number = 10, skip: number = 0): Promise<User[]> {

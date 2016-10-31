@@ -1,8 +1,8 @@
 import { Db, MongoClient } from 'mongodb';
 import * as config from '../../../config'
 
-    // [config.mongo.login, config.mongo.password].join(':'),
-    // '@',
+// [config.mongo.login, config.mongo.password].join(':'),
+// '@',
 const url: string = [
     'mongodb://',
     config.mongo.host,
@@ -14,24 +14,27 @@ export class MongoDBConnection {
     private static isConnected: boolean = false;
     private static db: Db;
 
-    public static getConnection(result: (connection: any) => void) {
-        return this.isConnected ?
-            result(this.db) :
-            this.connect((error: any, db: Db) => {
+    public static getConnection(): Promise<Db> {
+        return new Promise<Db>((resolve, reject) => {
+            if (this.isConnected) {
+                return resolve(this.db);
+            }
+            MongoClient.connect(url, (error: any, db: Db) => {
+                console.log([
+                    '[Mongo] ',
+                    'Attempting connect to db (',
+                    url,
+                    ') status: ',
+                    error ? error.toString() : 'connected',
+                ].join(''));
+
                 if (error) {
-                    throw 'DB connection error(' + url + '): ' + error.toString();
+                    return reject('DB connection error(' + url + '): ' + error.toString());
                 }
-                console.log("Connecting to mongo status: " + (this.isConnected ? 'connected' : 'disconnected'));
-                return result(this.db);
+                this.db = db;
+                this.isConnected = true;
+                resolve(this.db);
             });
-    }
-
-    private static connect(result: (error: any, db: Db) => void) {
-        MongoClient.connect(url, (error: any, db: Db) => {
-
-            this.db = db;
-            this.isConnected = true;
-            return result(error, db);
         });
     }
 }

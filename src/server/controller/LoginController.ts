@@ -4,7 +4,6 @@ import * as express from 'express';
 import { provideNamed, inject } from '../ioc/ioc';
 import TAGS from '../constant/tags';
 import ROUTES from '../config/routes';
-import { csrfProtection } from '../middleware/csrfProtection';
 import TYPES from '../constant/types';
 import { IUserService } from '../services/user/IUserService';
 import { User } from '../model/infrastructure/User';
@@ -13,7 +12,7 @@ import { Token } from '../services/authentication/model/Token';
 import { ICryptographicService } from '../services/cryptographic/ICryptographicService';
 
 @provideNamed(TYPE.Controller, TAGS.LoginController)
-@Controller(ROUTES.authenticate, csrfProtection)
+@Controller(ROUTES.authenticate)
 export class LoginController {
 
     public static ACTION = {
@@ -58,7 +57,7 @@ export class LoginController {
             }));
     }
 
-    @Post(LoginController.ACTION.subscribe, csrfProtection)
+    @Post(LoginController.ACTION.subscribe)
     public subscribe(req: express.Request, res: express.Response): void {
 
         const name: string = req.body.name;

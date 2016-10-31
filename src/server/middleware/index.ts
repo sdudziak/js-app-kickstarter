@@ -1,1 +1,1 @@
-export { csrfProtection } from './csrfProtection';
+export { JWTauthenticate } from './JWTauthenticate';

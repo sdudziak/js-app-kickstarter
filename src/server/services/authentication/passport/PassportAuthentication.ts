@@ -1,22 +1,23 @@
 import { IAuthenticationService } from '../IAuthenticationService';
 import TYPES from '../../../constant/types';
-import { provide } from '../../../ioc/ioc';
+import { provideSingleton } from '../../../ioc/ioc';
 import ROUTES from '../../../config/routes';
 import * as jwt from 'jsonwebtoken';
 import * as config from '../../../config/index'
 import { IStrategy } from './strategy/IStrategy';
 import { User } from '../../../model/infrastructure/User';
 import { Token } from '../model/Token';
-var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 import passport = require('passport');
 
-@provide(TYPES.IAuthenticationService)
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+
+@provideSingleton(TYPES.IAuthenticationService)
 export class PassportAuthentication implements IAuthenticationService {
 
     private passport: any;
-    private strategies: {[name: string]: IStrategy};
+    private strategies: {[name: string]: IStrategy} = {};
 
-    public addAuthStrategy(anStrategy: IStrategy) {
+    public addAuthStrategy(anStrategy: IStrategy): void {
         if (this.strategies[anStrategy.name()]) {
             throw new Error('You\'re trying to add ' + anStrategy.name() + ' second time!');
         }

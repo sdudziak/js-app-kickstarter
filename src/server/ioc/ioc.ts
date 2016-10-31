@@ -19,4 +19,10 @@ let provideNamed = function (identifier: any, name: string) {
         .done();
 };
 
-export { kernel, autoProvide, provide, provideNamed, inject };
+let provideSingleton = function (identifier: any) {
+    return fluentProvider(identifier)
+        .inSingletonScope()
+        .done();
+};
+
+export { kernel, autoProvide, provide, provideNamed, inject, provideSingleton };

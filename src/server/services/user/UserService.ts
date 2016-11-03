@@ -13,7 +13,6 @@ export class UserService implements IUserService {
     private mongo: IPersistenceClient<User>;
 
     constructor(@inject(TYPES.IPersistenceClient) mongo: IPersistenceClient<User>) {
-        console.log('User service created');
         this.mongo = mongo;
     }
 

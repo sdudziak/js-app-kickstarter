@@ -49,9 +49,12 @@ export class LoginController {
                 this.cryptographicService.isPasswordValid(req.body.password, user.passwordHash) ?
                     user : Error("Invalid password")
             )
-            .then((user: User) => this.authenticationService.authenticate(user))
+            .then((user: User) => {
+                req.user = user;
+                return this.authenticationService.authenticate(user);
+            })
             .then((token: Token) => res.json({ message: "ok", token: token.toJson() }))
-            .catch((reason) => res.status(401).json({
+            .catch((reason: any) => res.status(401).json({
                 message: "Cannot log in. Reason: " + reason.toString(),
                 details: reason
             }));
@@ -67,7 +70,6 @@ export class LoginController {
         this.userService
             .getUserByMail(mail)
             .then((user: User | null) => {
-                console.log(user);
                 if (user) {
                     throw new Error("User with provided mail already exists");
                 }

@@ -2,15 +2,14 @@ import { Controller, Get, TYPE } from 'inversify-express-utils';
 import { provideNamed } from '../ioc/ioc';
 import TAGS from '../constant/tags';
 import ROUTES from '../config/routes';
-import * as passport from 'passport';
-// import { JWTauthenticate } from '../middleware';
+import { JWTAuthenticate } from '../middleware';
 
 
 @provideNamed(TYPE.Controller, TAGS.UserController)
 @Controller(ROUTES.user)
 export class UserController {
 
-    @Get('/', passport.authenticate('jwt', { session: false }))
+    @Get('/', JWTAuthenticate)
     public get(): string {
         return 'My sweet users';
     }

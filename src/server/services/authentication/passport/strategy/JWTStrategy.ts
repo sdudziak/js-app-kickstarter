@@ -33,12 +33,10 @@ export class JwtStrategy implements IStrategy {
     }
 
     public serialize(user: User, done: Function): void {
-        console.log('serializeUser: ' + user._id);
         done(null, user._id.toString());
     }
 
     public deserialize(id: string, done: Function) {
-        console.log('deserializeUser: ' + id);
         const userService = kernel.get<IUserService>(TYPES.IUserService);
         userService.getUserById(id)
             .then((user: User) => done(null, user))
@@ -50,16 +48,17 @@ export class JwtStrategy implements IStrategy {
             return next(null, false);
         }
         const userService = kernel.get<IUserService>(TYPES.IUserService);
-        var user = userService.getUserById(payload.id);
-        if (!user) {
-            return next(null, false);
-        }
-        req.user = user;
-        next(null, user);
+        userService
+            .getUserById(payload.id)
+            .then((user: User) => {
+                req.user = user;
+                next(null, user);
+            })
+            .catch((reason) => next(null, false));
     }
 
     public registerTo(passport: any): void {
-        this.strategy = new PassportJwtStrategy(this.options(), this.strategyHandler);
+        this.strategy = new PassportJwtStrategy(this.options(), this.strategyHandler.bind(this));
         passport.serializeUser(this.serialize);
         passport.deserializeUser(this.deserialize);
         passport.use(this.name(), this.strategy);

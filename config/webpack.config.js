@@ -65,7 +65,7 @@ var config = {
     // },
     plugins:    [
         new webpack.optimize.CommonsChunkPlugin({
-            names:    ['vendor'],
+            names:    ['vendor', 'jquery'],
             filename: '[name].js'
         }, Infinity),
         new webpack.optimize.DedupePlugin()

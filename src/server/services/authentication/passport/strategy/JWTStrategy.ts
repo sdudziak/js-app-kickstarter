@@ -1,5 +1,6 @@
 import passport = require('passport');
 import * as express from 'express';
+import * as jwt from 'jsonwebtoken';
 import { ExtractJwt, Strategy as PassportJwtStrategy } from "passport-jwt";
 
 
@@ -9,6 +10,7 @@ import TYPES from '../../../../constant/types';
 import { IUserService } from '../../../user/IUserService';
 import { provide, kernel } from '../../../../ioc/ioc'
 import * as config from '../../../../config/index';
+import { Token } from '../../model/Token';
 
 @provide(TYPES.IStrategy)
 export class JwtStrategy implements IStrategy {
@@ -41,6 +43,18 @@ export class JwtStrategy implements IStrategy {
         userService.getUserById(id)
             .then((user: User) => done(null, user))
             .catch((reason: any) => done(reason, null));
+    }
+
+    public authenticate(user: User): Promise<Token> {
+        return new Promise((resolve: Function) => {
+            const payload: { id: string, expireAt: number } = {
+                id:       user._id.toHexString(),
+                expireAt: Date.now() + config.app.tokenLifetime
+            };
+            const token = jwt.sign(payload, config.app.secret);
+
+            resolve(new Token(payload, token));
+        });
     }
 
     public strategyHandler(req: Express.Request, payload: { id: string, expireAt: number }, next: Function): void {

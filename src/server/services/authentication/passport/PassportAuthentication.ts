@@ -1,13 +1,12 @@
+import passport = require('passport');
+import  * as _  from 'lodash';
 import { IAuthenticationService } from '../IAuthenticationService';
 import TYPES from '../../../constant/types';
 import { provideSingleton } from '../../../ioc/ioc';
 import ROUTES from '../../../config/routes';
-import * as jwt from 'jsonwebtoken';
-import * as config from '../../../config/index'
 import { IStrategy } from './strategy/IStrategy';
 import { User } from '../../../model/infrastructure/User';
 import { Token } from '../model/Token';
-import passport = require('passport');
 
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
@@ -34,14 +33,26 @@ export class PassportAuthentication implements IAuthenticationService {
     }
 
     public authenticate(user: User): Promise<Token> {
-        return new Promise((resolve: Function) => {
-            const payload: { id: string, expireAt: number } = {
-                id:       user._id.toHexString(),
-                expireAt: Date.now() + config.app.tokenLifetime
-            };
-            const token = jwt.sign(payload, config.app.secret);
+        return new Promise((resolve: Function, reject: Function) => {
+            let errors: {[strategyName: string]: any} = [];
+            let errorsCounter: number = 0;
+            let strategiesCount: Number = Object
+                .keys(this.strategies)
+                .map(key => this.strategies.hasOwnProperty(key))
+                .length;
 
-            resolve(new Token(payload, token));
+            for (const strategyName in this.strategies) {
+                const strategy: IStrategy = this.strategies[strategyName];
+                strategy
+                    .authenticate(user)
+                    .then((token: Token) => resolve(token))
+                    .catch((reason: any) => {
+                        errors[strategyName] = reason;
+                        if (++errorsCounter === strategiesCount) {
+                            reject(errors);
+                        }
+                    });
+            }
         });
     }
 

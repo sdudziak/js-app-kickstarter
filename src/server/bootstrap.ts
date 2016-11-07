@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
+import * as SocketIO from 'socket.io';
 
 import { kernel } from './ioc/ioc';
 import * as config from './config';
@@ -31,7 +32,17 @@ server.setConfig((app) => {
 });
 
 let app = server.build();
-app.listen(config.url.port);
+
+let instance: any = app.listen(config.url.port);
 console.log(`Server started on port ${config.url.port} :)`);
+
+
+let socketIO = SocketIO.listen(instance);
+socketIO.on('connection', (socket: SocketIO.Server) => {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data: any) {
+        console.log(data);
+    });
+});
 
 exports = module.exports = app;

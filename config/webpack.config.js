@@ -5,9 +5,8 @@ var webpack    = require('webpack');
 
 var config = {
     entry:      {
-        bundle: gulpConfig.webpack.entrypoint,
-        vendor: ['react', 'react-dom', 'rx'],
-        jquery: ['jquery']
+        vendor: ['react', 'react-dom', 'rx', 'jquery'],
+        bundle: gulpConfig.webpack.entrypoint
     },
     output:     {
         path:       __dirname + '/dist',
@@ -22,6 +21,9 @@ var config = {
             test:    /\.json$/,
             loaders: ['json-loader']
         }, {
+            test:    /\.md$/,
+            loaders: ['md-loader']
+        }, {
             test:    /\.scss$/,
             loaders: ['style', 'css', 'sass']
         }, {
@@ -30,14 +32,14 @@ var config = {
         }, {
             test:   require.resolve('jquery'),
             loader: 'expose?$!expose?jQuery'
-        }
-        ]
+        }],
+        noParse: [/\.md$/]
     },
+    externals:  ['ws', 'fs'],
     sassLoader: {
         includePaths: [path.resolve(__dirname, './node_modules')]
     },
     node:       {
-        fs:            "empty",
         net:           "empty",
         child_process: "empty",
         dns:           "empty",
@@ -65,10 +67,13 @@ var config = {
     // },
     plugins:    [
         new webpack.optimize.CommonsChunkPlugin({
-            names:    ['vendor', 'jquery'],
+            names:    ['vendor'],
             filename: '[name].js'
         }, Infinity),
-        new webpack.optimize.DedupePlugin()
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
     ]
 };
 

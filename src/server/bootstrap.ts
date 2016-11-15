@@ -23,26 +23,26 @@ let authService: IAuthenticationService = kernel
 authService.setProvider(passport);
 authService.addAuthStrategy(kernel.get<IStrategy>(TYPES.IStrategy));
 
-server.setConfig((app) => {
-    app.use(passport.initialize());
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    app.use(helmet());
-    app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
-});
-
-let app = server.build();
-
-let instance: any = app.listen(config.url.port);
-console.log(`Server started on port ${config.url.port} :)`);
-
-
-let socketIO = SocketIO.listen(instance);
-socketIO.on('connection', (socket: SocketIO.Server) => {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data: any) {
-        console.log(data);
+    server.setConfig((app) => {
+        app.use(passport.initialize());
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(bodyParser.json());
+        app.use(helmet());
+        app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
     });
-});
 
-exports = module.exports = app;
+    let app = server.build();
+
+    let instance: any = app.listen(config.url.port);
+    console.log(`Server started on port ${config.url.port} :)`);
+
+
+    let socketIO = SocketIO.listen(instance);
+    socketIO.on('connection', (socket: SocketIO.Server) => {
+        socket.emit('news', { hello: 'world' });
+        socket.on('my other event', function (data: any) {
+            console.log(data);
+        });
+    });
+
+    exports = module.exports = app;

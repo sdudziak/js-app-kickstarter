@@ -14,6 +14,7 @@ export class IndexController {
     @Get('/')
     public get(req: express.Request, res: express.Response, next: NextFunction): void {
         passport.authenticate('jwt', ((error: any, user: any, info: any) => {
+            // render this views, not only cache; + translations
             user
                 ? res.sendFile(path.resolve(__dirname + '/../public/index-authorized.html'))
                 : res.sendFile(path.resolve(__dirname + '/../public/index.html'));

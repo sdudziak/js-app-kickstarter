@@ -14,7 +14,7 @@ var config = {
         publicPath: 'public/'
     },
     module:     {
-        loaders: [{
+        loaders:    [{
             test:    /\.ts(x?)$/,
             loaders: ['babel?plugins[]=transform-runtime', 'awesome-typescript-loader']
         }, {
@@ -33,7 +33,10 @@ var config = {
             test:   require.resolve('jquery'),
             loader: 'expose?$!expose?jQuery'
         }],
-        noParse: [/\.md$/]
+        preLoaders: [{
+            test: /\.js$/, loader: "source-map-loader"
+        }],
+        noParse:    [/\.md$/]
     },
     externals:  ['ws', 'fs'],
     sassLoader: {

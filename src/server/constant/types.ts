@@ -5,6 +5,8 @@ const TYPES = {
     ICryptographicService:  Symbol('Cryptographic'),
     User:                   Symbol('User'),
     IUserService:           Symbol('UserService'),
+    ISocketIOManager:       Symbol('SocketIOManager'),
+    SocketIO:               'SocketIO.Server'
 };
 
 export default TYPES;

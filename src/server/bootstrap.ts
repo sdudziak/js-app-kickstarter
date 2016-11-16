@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
-import * as SocketIO from 'socket.io';
+import * as io from 'socket.io';
 
 import { kernel } from './ioc/ioc';
 import * as config from './config';
@@ -15,6 +15,7 @@ import './ioc/loader';
 import TYPES from './constant/types';
 import { IAuthenticationService } from './services/authentication/IAuthenticationService';
 import { IStrategy } from './services/authentication/passport/strategy/IStrategy';
+import { ISocketIOManager } from './services/socketIOManager/ISocketIOManager';
 
 // start the server
 let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
@@ -33,16 +34,14 @@ server.setConfig((app) => {
 
 let app = server.build();
 
-let instance: any = app.listen(config.url.port);
+const instance: any = app.listen(config.url.port);
 console.log(`Server started on port ${config.url.port} :)`);
 
 
-let socketIO: SocketIO.Server = SocketIO.listen(instance);
-socketIO.on('connection', (socket: SocketIO.Server) => {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data: any) {
-        console.log(data);
-    });
-});
+const socketIO: SocketIO.Server = io.listen(instance);
+kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
+
+const socketIOManager: ISocketIOManager = kernel.get<ISocketIOManager>(TYPES.ISocketIOManager);
+socketIOManager.init();
 
 exports = module.exports = app;

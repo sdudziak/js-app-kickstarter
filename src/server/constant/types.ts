@@ -5,7 +5,7 @@ const TYPES = {
     ICryptographicService:  Symbol('Cryptographic'),
     User:                   Symbol('User'),
     IUserService:           Symbol('UserService'),
-    ISocketIOManager:       Symbol('SocketIOManager'),
+    IEventManager:          Symbol('EventManager'),
     SocketIO:               'SocketIO.Server'
 };
 

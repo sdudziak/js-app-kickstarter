@@ -15,7 +15,7 @@ import './ioc/loader';
 import TYPES from './constant/types';
 import { IAuthenticationService } from './services/authentication/IAuthenticationService';
 import { IStrategy } from './services/authentication/passport/strategy/IStrategy';
-import { ISocketIOManager } from './services/socketIOManager/ISocketIOManager';
+import { IEventManager } from './services/eventManager/IEventManager';
 
 // start the server
 let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
@@ -41,7 +41,7 @@ console.log(`Server started on port ${config.url.port} :)`);
 const socketIO: SocketIO.Server = io.listen(instance);
 kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
 
-const socketIOManager: ISocketIOManager = kernel.get<ISocketIOManager>(TYPES.ISocketIOManager);
-socketIOManager.init();
+const EventManager: IEventManager = kernel.get<IEventManager>(TYPES.IEventManager);
+EventManager.init();
 
 exports = module.exports = app;

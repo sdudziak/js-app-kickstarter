@@ -7,7 +7,10 @@ import '../controller/LoginController';
 import '../services/authentication/passport/PassportAuthentication';
 import '../services/user/UserService';
 import '../services/cryptographic/Cryptographic';
-import '../services/eventManager/EventManager';
+
+// events
+import '../services/eventManager/MultipleProvidersEventManager';
+import '../services/eventManager/provider/SocketIOEventManager';
 
 // authentication strategies
 import '../services/authentication/passport/strategy/JWTStrategy';

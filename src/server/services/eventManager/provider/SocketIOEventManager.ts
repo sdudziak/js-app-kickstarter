@@ -1,3 +1,4 @@
+import 'socket.io';
 import { IEventManagerProvider } from '../IEventManager';
 import { IEvent } from '../IEvent';
 import { provideNamedSingleton, inject } from '../../../ioc/ioc';
@@ -24,6 +25,10 @@ export class SocketIOEventManager implements IEventManagerProvider {
     }
 
     public on(eventName: string, callback: Function): void {
+        this.connected()
+            .then((socket: SocketIO.Server) => socket.on(eventName, callback))
+            .catch((reason:any) => new Error('Cannot register event!'));
+
         this.io.on('connection', (socket: SocketIO.Server) => {
             socket.emit('news', { hello: 'world from socket manager' });
             socket.on('my other event', function (data: any) {

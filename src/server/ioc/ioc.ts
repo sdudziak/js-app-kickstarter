@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Kernel, inject, interfaces } from 'inversify';
+import { Kernel, inject, interfaces, multiInject } from 'inversify';
 import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from 'inversify-binding-decorators';
 import { makeLoggerMiddleware } from 'inversify-logger-middleware';
 
@@ -32,4 +32,4 @@ let provideNamedSingleton = function (identifier: any, name: string) {
         .done();
 };
 
-export { kernel, autoProvide, provide, provideNamed, inject, provideSingleton, provideNamedSingleton };
+export { kernel, autoProvide, provide, provideNamed, inject, multiInject, provideSingleton, provideNamedSingleton };

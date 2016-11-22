@@ -1,7 +1,7 @@
 import { IEvent } from './IEvent';
 
 export interface IEventManager extends IEventEmitter {
-    init(): void;
+    init(providers: IEventManagerProvider[]): void;
     registerProvider(provider: IEventManagerProvider): void;
     getRegisteredEventProvider(eventType: string): IEventManagerProvider;
 }

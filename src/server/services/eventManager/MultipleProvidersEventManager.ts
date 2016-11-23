@@ -16,8 +16,9 @@ export class MultipleProvidersEventManager implements IEventManager {
         this.logger = logger;
     }
 
-    public init(providers: IEventManagerProvider[]): void {
-        forEach(providers, this.registerProvider.bind(this))
+    public initProviders(providers: IEventManagerProvider[]): IEventManager {
+        forEach(providers, this.registerProvider.bind(this));
+        return this;
     }
 
     public registerProvider(provider: IEventManagerProvider): void {
@@ -28,13 +29,14 @@ export class MultipleProvidersEventManager implements IEventManager {
         this.providers[provider.type()] = provider;
     }
 
-    initListeners(eventListeners: IEventListener[]): void {
+    initListeners(eventListeners: IEventListener[]): IEventManager {
         eventListeners.forEach((eventListener: IEventListener) =>
             eventListener.getEventHandlers()
                 .forEach((eventHandler: EventHandler) =>
                     this.getRegisteredEventProvider(eventListener.eventType())
                         .on(eventListener.eventName(), eventHandler))
         );
+        return this;
     }
 
     public emit(event: IEvent): void {

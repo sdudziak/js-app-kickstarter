@@ -42,6 +42,7 @@ kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
 
 kernel
     .get<IEventManager>(TYPES.IEventManager)
-    .init(kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider));
+    .initProviders(kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider))
+    .initListeners([]);
 
 exports = module.exports = app;

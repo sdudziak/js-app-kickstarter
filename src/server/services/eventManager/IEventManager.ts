@@ -2,8 +2,8 @@ import { IEvent } from './IEvent';
 import { IEventListener } from './IEventListener';
 
 export interface IEventManager extends IEventEmitter {
-    init(providers: IEventManagerProvider[]): void;
-    initListeners(eventListeners: IEventListener[]): void;
+    initProviders(providers: IEventManagerProvider[]): IEventManager;
+    initListeners(eventListeners: IEventListener[]): IEventManager;
     registerProvider(provider: IEventManagerProvider): void;
     getRegisteredEventProvider(eventType: string): IEventManagerProvider;
 }

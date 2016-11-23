@@ -42,8 +42,7 @@ console.log(`Server started on port ${config.url.port} :)`);
 const socketIO: SocketIO.Server = io.listen(instance);
 kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
 
-const eventManager: IEventManager = kernel.get<IEventManager>(TYPES.IEventManager);
-console.log(eventManager);
-eventManager.init(kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider));
+const eventManagerProviders: IEventManagerProvider[] = kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider);
+kernel.get<IEventManager>(TYPES.IEventManager).init(eventManagerProviders);
 
 exports = module.exports = app;

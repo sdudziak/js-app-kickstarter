@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 import { Kernel, inject, interfaces, multiInject } from 'inversify';
+export { interfaces} from 'inversify';
+
 import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from 'inversify-binding-decorators';
 import { makeLoggerMiddleware } from 'inversify-logger-middleware';
 

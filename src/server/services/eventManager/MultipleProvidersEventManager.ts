@@ -4,6 +4,7 @@ import { IEventManager, IEventManagerProvider } from './IEventManager';
 import { IEvent } from './IEvent';
 import forEach = require('lodash/forEach');
 import { ILogger, SEVERITY } from '../logger/ILogger';
+import { IEventListener, EventHandler } from './IEventListener';
 
 @provideSingleton(TYPES.IEventManager)
 export class MultipleProvidersEventManager implements IEventManager {
@@ -23,8 +24,17 @@ export class MultipleProvidersEventManager implements IEventManager {
         if (this.providers[provider.type()]) {
             throw new Error('Event Manager provider already registered');
         }
-        this.logger.log('Registered "' + provider.type() + '" event manager provider', SEVERITY.info); 
+        this.logger.log('Registered "' + provider.type() + '" event manager provider', SEVERITY.info);
         this.providers[provider.type()] = provider;
+    }
+
+    initListeners(eventListeners: IEventListener[]): void {
+        eventListeners.forEach((eventListener: IEventListener) =>
+            eventListener.getEventHandlers()
+                .forEach((eventHandler: EventHandler) =>
+                    this.getRegisteredEventProvider(eventListener.eventType())
+                        .on(eventListener.eventName(), eventHandler))
+        );
     }
 
     public emit(event: IEvent): void {

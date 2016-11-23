@@ -37,12 +37,9 @@ let app = server.build();
 const instance: any = app.listen(config.url.port);
 console.log(`Server started on port ${config.url.port} :)`);
 
-// todo:  inject as a provider:
-
 const socketIO: SocketIO.Server = io.listen(instance);
 kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
 
-const eventManagerProviders: IEventManagerProvider[] = kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider);
-kernel.get<IEventManager>(TYPES.IEventManager).init(eventManagerProviders);
+kernel.get<IEventManager>(TYPES.IEventManager).init(kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider));
 
 exports = module.exports = app;

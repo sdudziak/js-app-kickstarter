@@ -1,13 +1,19 @@
-import { provideSingleton } from '../../ioc/ioc';
+import { provideSingleton, inject } from '../../ioc/ioc';
 import TYPES from '../../constant/types';
 import { IEventManager, IEventManagerProvider } from './IEventManager';
 import { IEvent } from './IEvent';
 import forEach = require('lodash/forEach');
+import { ILogger, SEVERITY } from '../logger/ILogger';
 
 @provideSingleton(TYPES.IEventManager)
 export class MultipleProvidersEventManager implements IEventManager {
 
     protected providers: {[type: string]: IEventManagerProvider} = {};
+    protected logger: ILogger;
+
+    public constructor(@inject(TYPES.ILogger) logger: ILogger) {
+        this.logger = logger;
+    }
 
     public init(providers: IEventManagerProvider[]): void {
         forEach(providers, this.registerProvider.bind(this))
@@ -17,7 +23,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         if (this.providers[provider.type()]) {
             throw new Error('Event Manager provider already registered');
         }
-        console.log('Registered "' + provider.type() + '" event manager provider');
+        this.logger.log('Registered "' + provider.type() + '" event manager provider', SEVERITY.info); 
         this.providers[provider.type()] = provider;
     }
 

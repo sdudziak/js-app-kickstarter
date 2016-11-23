@@ -7,7 +7,8 @@ const TYPES = {
     IUserService:           Symbol('UserService'),
     IEventManager:          Symbol('MultipleProvidersEventManager'),
     IEventManagerProvider:  Symbol('IEventManagerProvider'),
-    SocketIO:               Symbol('SocketIO.Server')
+    SocketIO:               Symbol('SocketIO.Server'),
+    ILogger:                Symbol('ConsoleLogger'),
 };
 
 export default TYPES;

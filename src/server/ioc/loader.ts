@@ -7,6 +7,7 @@ import '../controller/LoginController';
 import '../services/authentication/passport/PassportAuthentication';
 import '../services/user/UserService';
 import '../services/cryptographic/Cryptographic';
+import '../services/logger/ConsoleLogger';
 
 // events
 import '../services/eventManager/MultipleProvidersEventManager';

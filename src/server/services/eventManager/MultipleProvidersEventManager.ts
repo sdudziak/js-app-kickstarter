@@ -1,7 +1,7 @@
 import { provideSingleton, inject } from '../../ioc/ioc';
 import TYPES from '../../constant/types';
 import { IEventManager, IEventManagerProvider } from './IEventManager';
-import { IEvent } from './IEvent';
+import { IEvent, IMultipleTypeEvent } from './IEvent';
 import forEach = require('lodash/forEach');
 import { ILogger, SEVERITY } from '../logger/ILogger';
 import { IEventListener, EventHandler } from './IEventListener';
@@ -16,7 +16,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         this.logger = logger;
     }
 
-    public initProviders(providers: IEventManagerProvider[]): IEventManager {
+    public initProviders(providers: IEventManagerProvider[]): this {
         forEach(providers, this.registerProvider.bind(this));
         return this;
     }
@@ -29,7 +29,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         this.providers[provider.type()] = provider;
     }
 
-    initListeners(eventListeners: IEventListener[]): IEventManager {
+    initListeners(eventListeners: IEventListener[]): this {
         eventListeners.forEach((eventListener: IEventListener) =>
             eventListener.getEventHandlers()
                 .forEach((eventHandler: EventHandler) =>
@@ -39,11 +39,16 @@ export class MultipleProvidersEventManager implements IEventManager {
         return this;
     }
 
-    public emit(event: IEvent): void {
-        if (!this.providers[event.type()]) {
-            throw new Error('Unknown event type!');
-        }
-        this.providers[event.type()].emit(event);
+    public emit(event: IMultipleTypeEvent): void {
+        console.log(event);
+        event
+            .types()
+            .filter((eventType: string) => this.providers.hasOwnProperty(eventType))
+            .forEach((eventType: string) => this.providers[eventType].emit(<IEvent> {
+                data: (): string => event.data(),
+                name: (): string => event.name(),
+                type: (): string => eventType
+            }));
     }
 
     public getRegisteredEventProvider(eventType: string): IEventManagerProvider {

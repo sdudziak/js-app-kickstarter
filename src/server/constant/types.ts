@@ -1,14 +1,15 @@
 const TYPES = {
-    IAuthenticationService: Symbol('PassportAuthentication'),
-    IStrategy:              Symbol('JwtStrategy'),
-    IPersistenceClient:     Symbol('MongoPersistenceClient'),
-    ICryptographicService:  Symbol('Cryptographic'),
+    IAuthenticationService: Symbol('IAuthenticationService'),
+    IStrategy:              Symbol('IStrategy'),
+    IPersistenceClient:     Symbol('IPersistenceClient'),
+    ICryptographicService:  Symbol('ICryptographicService'),
     User:                   Symbol('User'),
-    IUserService:           Symbol('UserService'),
-    IEventManager:          Symbol('MultipleProvidersEventManager'),
+    IUserService:           Symbol('IUserService'),
+    IEventManager:          Symbol('IEventManager'),
     IEventManagerProvider:  Symbol('IEventManagerProvider'),
     SocketIO:               Symbol('SocketIO.Server'),
-    ILogger:                Symbol('ConsoleLogger'),
+    ILogger:                Symbol('ILogger'),
+    IEventListener:         Symbol('IEventListener'),
 };
 
 export default TYPES;

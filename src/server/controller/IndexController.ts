@@ -16,7 +16,10 @@ export class IndexController {
         passport.authenticate('jwt', ((error: any, user: any, info: any) => {
             // render this views, not only cache; + translations
             user
-                ? res.sendFile(path.resolve(__dirname + '/../public/index-authorized.html'))
+                ?
+                res
+                    .header({ 'X-User': JSON.stringify({ id: user._id }) })
+                    .sendFile(path.resolve(__dirname + '/../public/index-authorized.html'))
                 : res.sendFile(path.resolve(__dirname + '/../public/index.html'));
         }))(req, res, next);
     }

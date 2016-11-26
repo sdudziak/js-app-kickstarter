@@ -1,6 +1,10 @@
-const EVENT_TYPES = {
+export const EVENT_TYPES = {
     domain: 'domain.event',
     socket: 'socket.event'
 };
 
-export default EVENT_TYPES;
+export const EVENT_NAMES = {
+    socketOnUserConnected: 'socket.onUserConnected',
+    socketConnection: 'connection'
+}
+

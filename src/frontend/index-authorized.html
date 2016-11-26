@@ -12,9 +12,11 @@
 <script src="public/bundle.js"></script>
 <script>
     var socket = io('http://localhost:8080');
-    socket.on('news', function (data) {
-        console.log(data);
-        socket.emit('my other event', {my: 'data'});
+    var req    = new XMLHttpRequest();
+    var user   = req.getAllResponseHeaders();
+    socket.on('connection', function (data) {
+        console.log('connection');
+        socket.emit('socket.onUserConnected', {my: 'data'});
     });
 </script>
 </body>

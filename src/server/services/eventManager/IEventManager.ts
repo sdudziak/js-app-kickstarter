@@ -1,4 +1,4 @@
-import { IEvent } from './IEvent';
+import { IEvent, IMultipleTypeEvent } from './IEvent';
 import { IEventListener } from './IEventListener';
 
 export interface IEventManager extends IEventEmitter {
@@ -10,7 +10,7 @@ export interface IEventManager extends IEventEmitter {
 
 
 export interface IEventEmitter {
-    emit(event: IEvent): void;
+    emit(event: IEvent | IMultipleTypeEvent): void;
 }
 
 export interface IEventRegistrar {
@@ -19,6 +19,10 @@ export interface IEventRegistrar {
 
 export interface IType {
     type(): string;
+}
+
+export interface IMultipleTypes {
+    types(): string[];
 }
 
 export interface IEventManagerProvider extends IType, IEventEmitter, IEventRegistrar {

@@ -16,6 +16,7 @@ import TYPES from './constant/types';
 import { IAuthenticationService } from './services/authentication/IAuthenticationService';
 import { IStrategy } from './services/authentication/passport/strategy/IStrategy';
 import { IEventManager, IEventManagerProvider } from './services/eventManager/IEventManager';
+import { IEventListener } from './services/eventManager/IEventListener';
 
 // start the server
 let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
@@ -43,6 +44,6 @@ kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
 kernel
     .get<IEventManager>(TYPES.IEventManager)
     .initProviders(kernel.getAll<IEventManagerProvider>(TYPES.IEventManagerProvider))
-    .initListeners([]);
+    .initListeners(kernel.getAll<IEventListener>(TYPES.IEventListener));
 
 exports = module.exports = app;

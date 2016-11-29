@@ -5,15 +5,22 @@ import TYPES from '../../../constant/types';
 import TAGS from '../../../constant/tags';
 import { EVENT_TYPES }from '../../../constant/events';
 import { IEventListener } from '../IEventListener';
+import { User } from '../../../model/infrastructure/User';
+import { IUserService } from '../../user/IUserService';
 
 @provideNamedSingleton(TYPES.IEventManagerProvider, TAGS.SocketIOEventManagerProvider)
 export class SocketIOEventManager implements IEventManagerProvider {
 
     protected ioStatic: SocketIO.Server;
     protected _io: SocketIO.Socket;
+    protected userService: IUserService;
 
-    public constructor(@inject(TYPES.SocketIO) socketServer: SocketIO.Server) {
-        this.ioStatic = socketServer;
+    private connectedUsers: {[socketId: string]: User};
+
+    public constructor(@inject(TYPES.SocketIO) socketServer: SocketIO.Server,
+                       @inject(TYPES.IUserService) userService: IUserService) {
+        this.ioStatic    = socketServer;
+        this.userService = userService;
     }
 
     public set io(io: SocketIO.Socket) {
@@ -29,7 +36,7 @@ export class SocketIOEventManager implements IEventManagerProvider {
     }
 
     public on(eventName: string, callback: Function): void {
-        // this._io.on(eventName, callback);
+        this.ioStatic.on(eventName, callback);
     }
 
     initSocketListeners(socket: SocketIO.Socket, eventListeners: IEventListener[]): void {
@@ -38,7 +45,9 @@ export class SocketIOEventManager implements IEventManagerProvider {
             .forEach((eventListener: IEventListener) =>
                 eventListener.getEventHandlers()
                     .forEach((eventHandler: Function) => ((eHandler: Function) => {
-                            socket.on(eventListener.eventName(), eHandler)
+                            socket.on(eventListener.eventName(), function (data: any) {
+                                eHandler.apply(this, data);
+                            })
                         })(eventHandler)
                     )
             );

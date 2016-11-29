@@ -15,7 +15,6 @@ import '../services/eventManager/provider/SocketIOEventManager';
 
 // eventListeners
 import '../event/listener/SocketOnUserConnectedEventListener';
-import '../event/listener/SocketConnectionEventListener';
 
 // authentication strategies
 import '../services/authentication/passport/strategy/JWTStrategy';

@@ -60,6 +60,13 @@ export class LoginController {
     @Post(LoginController.ACTION.subscribe)
     public subscribe(req: express.Request, res: express.Response): void {
 
+        if (!req.body.name || !req.body.password || !req.body.mail) {
+            res.status(400).json({
+                message: "Missing one or both of required fields: name | password | mail"
+            });
+            return;
+        }
+
         const name: string = req.body.name;
         const mail: string = req.body.mail;
         const passwordHash: string = this.cryptographicService.generateHash(req.body.password);

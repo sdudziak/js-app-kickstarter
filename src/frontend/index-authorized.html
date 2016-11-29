@@ -6,17 +6,19 @@
 </head>
 <body>
 <div id="example"></div>
+<input type="hidden"
+       id="api-token"
+       value="JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4M2QyMDllZmEyZDQ0MTUyMmM3ZjMwYyIsImV4cGlyZUF0IjoxNDgyOTkzMjQ3NTc2LCJpYXQiOjE0ODA0MDEyNDd9.QNe-m9aN4DN1OHYzBd6bDlKN2OeHvwKeluMGJCYGpNU"/>
 <!-- Main -->
 <script src="public/vendor.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="public/bundle.js"></script>
 <script>
     var socket = io('http://localhost:8080');
-    var req    = new XMLHttpRequest();
-    var user   = req.getAllResponseHeaders();
     socket.on('connection', function (data) {
-        console.log('connection');
-        socket.emit('socket.onUserConnected', {my: 'data'});
+        token = document.getElementById('api-token').value;
+        console.log(token);
+        socket.emit('socket.onUserConnected', { token });
     });
 </script>
 </body>

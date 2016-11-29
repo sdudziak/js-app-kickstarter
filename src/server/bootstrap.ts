@@ -1,4 +1,4 @@
-import { InversifyExpressServer, interfaces } from 'inversify-express-utils'
+import { interfaces, InversifyExpressServer } from 'inversify-express-utils'
 import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
@@ -23,14 +23,14 @@ import { SocketOnUserConnectedEvent } from './event/SocketOnUserConnectedEvent';
 
 // start the server
 let server: interfaces.InversifyExpressServer = new InversifyExpressServer(kernel);
-let authService: IAuthenticationService = kernel
+let authService: IAuthenticationService       = kernel
     .get<IAuthenticationService>(TYPES.IAuthenticationService);
 authService.setProvider(passport);
 authService.addAuthStrategy(kernel.get<IStrategy>(TYPES.IStrategy));
 
-server.setConfig((app) => {
+server.setConfig((app: express.Application) => {
     app.use(passport.initialize());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(helmet());
     app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
@@ -51,6 +51,6 @@ eventManager.initListeners(kernel.getAll<IEventListener>(TYPES.IEventListener));
 socketIO.on("connection", function (socket: SocketIO.Socket) {
     const socketManager: SocketIOEventManager = <SocketIOEventManager> eventManager.getRegisteredEventProvider(EVENT_TYPES.socket);
     socketManager.initSocketListeners(socket, kernel.getAll<IEventListener>(TYPES.IEventListener));
-    eventManager.emit(new SocketOnUserConnectedEvent('Szymon'));
+    socket.emit('connection');
 });
 exports = module.exports = app;

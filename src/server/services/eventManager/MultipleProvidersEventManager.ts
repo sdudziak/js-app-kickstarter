@@ -43,7 +43,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         if (!this.providers.hasOwnProperty(event.type())) {
             throw new Error("Invalid event type!");
         }
-
+        console.log(event);
         this.providers[event.type()].emit(event);
     }
 

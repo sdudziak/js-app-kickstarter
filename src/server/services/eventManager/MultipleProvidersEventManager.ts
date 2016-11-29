@@ -1,7 +1,7 @@
 import { provideSingleton, inject } from '../../ioc/ioc';
 import TYPES from '../../constant/types';
 import { IEventManager, IEventManagerProvider } from './IEventManager';
-import { IEvent, IMultipleTypeEvent } from './IEvent';
+import { IEvent } from './IEvent';
 import forEach = require('lodash/forEach');
 import { ILogger, SEVERITY } from '../logger/ILogger';
 import { IEventListener, EventHandler } from './IEventListener';
@@ -39,16 +39,12 @@ export class MultipleProvidersEventManager implements IEventManager {
         return this;
     }
 
-    public emit(event: IMultipleTypeEvent): void {
-        console.log(event);
-        event
-            .types()
-            .filter((eventType: string) => this.providers.hasOwnProperty(eventType))
-            .forEach((eventType: string) => this.providers[eventType].emit(<IEvent> {
-                data: (): string => event.data(),
-                name: (): string => event.name(),
-                type: (): string => eventType
-            }));
+    public emit(event: IEvent): void {
+        if (!this.providers.hasOwnProperty(event.type())) {
+            throw new Error("Invalid event type!");
+        }
+
+        this.providers[event.type()].emit(event);
     }
 
     public getRegisteredEventProvider(eventType: string): IEventManagerProvider {

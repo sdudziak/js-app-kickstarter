@@ -1,7 +1,7 @@
-import { IMultipleTypeEvent } from '../services/eventManager/IEvent';
+import { IEvent } from '../services/eventManager/IEvent';
 import { EVENT_NAMES, EVENT_TYPES } from '../constant/events';
 
-export class SocketOnUserConnectedEvent implements IMultipleTypeEvent {
+export class SocketOnUserConnectedEvent implements IEvent {
 
     private _data: any = {};
 
@@ -17,8 +17,7 @@ export class SocketOnUserConnectedEvent implements IMultipleTypeEvent {
         return this._data;
     }
 
-    public types(): string[] {
-        return [EVENT_TYPES.socket];
+    public type(): string {
+        return EVENT_TYPES.socket;
     }
-
 }

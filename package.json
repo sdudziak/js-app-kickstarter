@@ -2,6 +2,13 @@
   "name":            "js-app-kickstarter",
   "version":         "1.0.0",
   "description":     "Node-express kickstarter written in typescript",
+  "scripts":         {
+    "test":        "karma start config/karma.config.js",
+    "build":       "rm -rf dist node_modules ./.bin; npm i",
+    "postbuild":   "ln -s node_modules/.bin ./.bin; gulp",
+    "start":       "nodemon -L dist/bootstrap.js",
+    "start:debug": "node --inspect dist/bootstrap.js"
+  },
   "dependencies":    {
     "bcrypt-nodejs":                "0.0.3",
     "bluebird":                     "^3.4.6",
@@ -138,13 +145,6 @@
     "webpack":                             "^1.13.2",
     "webpack-stream":                      "^3.2.0",
     "webpack-vendor-chunk-plugin":         "^1.0.0"
-  },
-  "scripts":         {
-    "test":        "karma start config/karma.config.js",
-    "build":       "rm -rf dist node_modules ./.bin; npm i",
-    "postbuild":   "ln -s node_modules/.bin ./.bin; gulp",
-    "start":       "nodemon -L dist/bootstrap.js",
-    "start:debug": "node --inspect dist/bootstrap.js"
   },
   "keywords":        [
     "typescript",

@@ -16,8 +16,12 @@ export class DoubleIdentifierMap<T> {
         return key in this.ID_1_list || key in this.ID_2_list;
     }
 
-    public get(key: string): T {
-        return this.ID_1_list[key] || this.ID_2_list[key];
+    public getByFirstKey(key: string): T {
+        return this.ID_1_list[key];
+    }
+
+    public getBySecondKey(key: string): T {
+        return this.ID_2_list[key];
     }
 
     public remove(firstKey: string, secondKey: string): void {

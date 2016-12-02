@@ -10,6 +10,7 @@ const TYPES = {
     SocketIO:               Symbol('SocketIO.Server'),
     ILogger:                Symbol('ILogger'),
     IEventListener:         Symbol('IEventListener'),
+    ISocketConnectedUsers:  Symbol('ISocketConnectedUsers'),
 };
 
 export default TYPES;

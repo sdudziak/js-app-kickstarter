@@ -13,14 +13,9 @@ export class SocketIOEventManager implements IEventManagerProvider {
 
     protected ioStatic: SocketIO.Server;
     protected _io: SocketIO.Socket;
-    protected userService: IUserService;
 
-    private connectedUsers: {[socketId: string]: User};
-
-    public constructor(@inject(TYPES.SocketIO) socketServer: SocketIO.Server,
-                       @inject(TYPES.IUserService) userService: IUserService) {
-        this.ioStatic    = socketServer;
-        this.userService = userService;
+    public constructor(@inject(TYPES.SocketIO) socketServer: SocketIO.Server) {
+        this.ioStatic = socketServer;
     }
 
     public set io(io: SocketIO.Socket) {

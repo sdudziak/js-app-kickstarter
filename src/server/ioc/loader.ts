@@ -8,6 +8,7 @@ import '../services/authentication/passport/PassportAuthentication';
 import '../services/user/UserService';
 import '../services/cryptographic/Cryptographic';
 import '../services/logger/ConsoleLogger';
+import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUsers'
 
 // events
 import '../services/eventManager/MultipleProvidersEventManager';

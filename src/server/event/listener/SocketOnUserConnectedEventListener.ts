@@ -17,7 +17,7 @@ export class SocketOnUserConnectedEventListener implements IEventListener {
 
     public getEventHandlers(): Function[] {
         return [
-            (event: IEvent) => console.log({ listener: 'SocketOnUserConnectedEventListener', event }),
+            function logger() { console.log({ this: this })},
         ];
     }
 

@@ -5,8 +5,6 @@ import TYPES from '../../../constant/types';
 import TAGS from '../../../constant/tags';
 import { EVENT_TYPES }from '../../../constant/events';
 import { IEventListener } from '../IEventListener';
-import { User } from '../../../model/infrastructure/User';
-import { IUserService } from '../../user/IUserService';
 
 @provideNamedSingleton(TYPES.IEventManagerProvider, TAGS.SocketIOEventManagerProvider)
 export class SocketIOEventManager implements IEventManagerProvider {
@@ -31,7 +29,7 @@ export class SocketIOEventManager implements IEventManagerProvider {
     }
 
     public on(eventName: string, callback: Function): void {
-        this.ioStatic.on(eventName, callback);
+        // this.ioStatic.on(eventName, callback);
     }
 
     initSocketListeners(socket: SocketIO.Socket, eventListeners: IEventListener[]): void {
@@ -41,7 +39,7 @@ export class SocketIOEventManager implements IEventManagerProvider {
                 eventListener.getEventHandlers()
                     .forEach((eventHandler: Function) => ((eHandler: Function) => {
                             socket.on(eventListener.eventName(), function (data: any) {
-                                eHandler.apply(this, data);
+                                eHandler.apply(data);
                             })
                         })(eventHandler)
                     )

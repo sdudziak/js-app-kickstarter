@@ -6,4 +6,5 @@ export interface IEventListener {
     eventType(): string;
     eventName(): string;
     getEventHandlers(): Function[];
+    validate()
 }

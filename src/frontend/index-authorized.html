@@ -16,7 +16,7 @@
 <script>
     var socket = io('http://localhost:8080');
     socket.on('connection', function (data) {
-        token = document.getElementById('api-token').value;
+        var token = document.getElementById('api-token').value;
         socket.emit('socket.onUserConnected', { token });
     });
 </script>

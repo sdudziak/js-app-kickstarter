@@ -1,9 +1,7 @@
-import { forEach } from 'lodash';
 import { provideSingleton } from '../../../../ioc/ioc';
 import { ISocketConnectedUsers } from './ISocketConnectedUsers';
 import TYPES from '../../../../constant/types';
 import { User } from '../../../../model/infrastructure/User';
-import { string } from 'joi';
 
 
 interface mapEntity {
@@ -15,6 +13,7 @@ interface mapEntity {
 export class SocketConnectedUsers implements ISocketConnectedUsers {
 
     private usersSocketSessions: {[userId: string]: mapEntity };
+    private socketSessionToUser: {[socketSessionId: string]: User};
 
     public constructor() {
         this.usersSocketSessions = {};
@@ -22,14 +21,16 @@ export class SocketConnectedUsers implements ISocketConnectedUsers {
 
     public attachSocketSessionToUser(user: User, socketSession: SocketIO.Socket): void {
         this.getAndCreateMapEntry(user).socketSessions[socketSession.id] = socketSession;
+        this.socketSessionToUser[socketSession.id] = user;
     }
 
     public detachUserFromSocketSession(socketSession: SocketIO.Socket, user: User): void {
         delete(this.getAndCreateMapEntry(user).socketSessions[socketSession.id]);
+        delete(this.socketSessionToUser[socketSession.id]);
     }
 
     public getUserBySocketSessionId(anSocketSessionId: string): User {
-        return undefined;
+        return this.socketSessionToUser[anSocketSessionId];
     }
 
     public getUserSocketSessions(user: User): SocketIO.Socket[] {
@@ -53,5 +54,4 @@ export class SocketConnectedUsers implements ISocketConnectedUsers {
         }
         return this.usersSocketSessions[userId];
     }
-
 }

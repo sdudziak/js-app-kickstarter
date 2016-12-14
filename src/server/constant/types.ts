@@ -11,6 +11,7 @@ const TYPES = {
     ILogger:                Symbol('ILogger'),
     IEventListener:         Symbol('IEventListener'),
     ISocketConnectedUsers:  Symbol('ISocketConnectedUsers'),
+
 };
 
 export default TYPES;

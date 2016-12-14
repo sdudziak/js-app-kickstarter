@@ -8,16 +8,18 @@
 <div id="example"></div>
 <input type="hidden"
        id="api-token"
-       value="JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4M2QyMDllZmEyZDQ0MTUyMmM3ZjMwYyIsImV4cGlyZUF0IjoxNDgyOTkzMjQ3NTc2LCJpYXQiOjE0ODA0MDEyNDd9.QNe-m9aN4DN1OHYzBd6bDlKN2OeHvwKeluMGJCYGpNU"/>
+       value="JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4NTFiZDc0MmRiNmJmNTU3YzNkMjIzZSIsImV4cGlyZUF0IjoxNDg0MzQzOTQyMzI0LCJpYXQiOjE0ODE3NTE5NDJ9.Labr7xFOhL56d-ZUmCt4IxElMgPwffGpLE5BO0uuOho"/>
 <!-- Main -->
 <script src="public/vendor.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="public/bundle.js"></script>
 <script>
-    var socket = io('http://localhost:8080');
-    socket.on('connection', function (data) {
-        var token = document.getElementById('api-token').value;
-        socket.emit('socket.onUserConnected', { token });
+    var token  = document.getElementById('api-token').value;
+    var socket = io('http://localhost:8080', {query: 'token=' + token});
+    socket.on('connect', function () {
+        console.log('authenticated');
+    }).on('disconnect',(details) => {
+        console.log('disconnected', details);
     });
 </script>
 </body>

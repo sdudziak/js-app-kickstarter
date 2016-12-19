@@ -3,12 +3,11 @@ import { Kernel, inject, interfaces, multiInject } from 'inversify';
 export { interfaces} from 'inversify';
 
 import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from 'inversify-binding-decorators';
-import { makeLoggerMiddleware } from 'inversify-logger-middleware';
-
+import { makeLoggerMiddleware, textSerializer } from 'inversify-logger-middleware';
 let kernel: interfaces.Kernel = new Kernel();
 
 if (process.env.NODE_ENV === 'development') {
-    let logger = makeLoggerMiddleware();
+    let logger = makeLoggerMiddleware(null, (entry) => console.log(textSerializer(entry)));
     kernel.applyMiddleware(logger);
 }
 

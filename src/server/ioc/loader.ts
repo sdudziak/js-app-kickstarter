@@ -10,10 +10,12 @@ import '../services/cryptographic/Cryptographic';
 import '../services/logger/ConsoleLogger';
 import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUsers';
 
-// Application
+
 import '../services/application/ApplicationServer';
 import '../services/application/initializer/AuthenticationPreBuildInitializer';
 import '../services/application/initializer/ConfigPreBuildInitializer';
+
+import '../services/application/initializer/SocketIOAuthenticationPostInstantiateInitializer';
 
 // events
 import '../services/eventManager/MultipleProvidersEventManager';
@@ -27,3 +29,5 @@ import '../services/authentication/passport/strategy/JWTStrategy';
 
 // utils
 import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';
+
+// Application

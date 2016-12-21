@@ -12,10 +12,11 @@ import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUs
 
 
 import '../services/application/ApplicationServer';
-import '../services/application/initializer/AuthenticationPreBuildInitializer';
-import '../services/application/initializer/ConfigPreBuildInitializer';
+import '../initializer/AuthenticationPreBuildInitializer';
+import '../initializer/ConfigPreBuildInitializer';
 
-import '../services/application/initializer/SocketIOAuthenticationPostInstantiateInitializer';
+import '../initializer/SocketIOAuthenticationPostInstantiateInitializer';
+import '../initializer/EvenManagerInitializer'
 
 // events
 import '../services/eventManager/MultipleProvidersEventManager';

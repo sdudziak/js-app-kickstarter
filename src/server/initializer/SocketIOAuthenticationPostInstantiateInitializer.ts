@@ -1,11 +1,11 @@
 import { Server } from 'http';
 import * as jwt from 'jsonwebtoken';
-import { PostInstantiateInitializer } from '../PostInstantiateInitializer';
-import { inject, provideSingleton } from '../../../ioc/ioc';
-import TYPES from '../../../constant/types';
-import { ILogger } from '../../logger/ILogger';
 import { NextFunction } from 'express-serve-static-core';
-import config = require('../../../config/index');
+import { inject, provideSingleton } from '../ioc/ioc';
+import TYPES from '../constant/types';
+import * as config from '../config';
+import { PostInstantiateInitializer } from '../services/application/PostInstantiateInitializer';
+import { ILogger } from '../services/logger/ILogger';
 
 @provideSingleton(TYPES.PostInstantiateInitializer)
 export class SocketIOAuthenticationPostInstantiateInitializer implements PostInstantiateInitializer {
@@ -25,7 +25,6 @@ export class SocketIOAuthenticationPostInstantiateInitializer implements PostIns
             if (!socket.handshake.query.token) {
                 socket.disconnect(true);
             }
-            // const result = jwt.decode(socket.handshake.query.token);
             const result = jwt.verify(socket.handshake.query.token.split(' ')[1], config.app.secret);
             if (!result) {
                 next(new Error('Invalid token'));

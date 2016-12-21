@@ -5,11 +5,11 @@ import * as helmet from 'helmet';
 import * as passport from 'passport';
 import { interfaces } from 'inversify-express-utils';
 
-import { PreBuildInitializer } from '../PreBuildInitializer';
-import { inject, provideSingleton } from '../../../ioc/ioc';
-import TYPES from '../../../constant/types';
-import * as config from '../../../config';
-import { ILogger } from '../../logger/ILogger';
+import { inject, provideSingleton } from '../ioc/ioc';
+import TYPES from '../constant/types';
+import * as config from '../config';
+import { PreBuildInitializer } from '../services/application/PreBuildInitializer';
+import { ILogger } from '../services/logger/ILogger';
 
 @provideSingleton(TYPES.PreBuildInitializer)
 export class ConfigPreBuildInitializer implements PreBuildInitializer {
@@ -32,8 +32,8 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
             this.logger.log('Initializing helmet');
             app.use(helmet());
 
-            this.logger.log('Initializing static paths');
-            app.use('/' + config.path.public, express.static(path.resolve(__dirname, config.path.public)));
+            this.logger.log('Initializing static paths ' + __dirname);
+            app.use('/' + config.path.public, express.static(path.resolve(__dirname, '..', config.path.public)));
         });
     }
 

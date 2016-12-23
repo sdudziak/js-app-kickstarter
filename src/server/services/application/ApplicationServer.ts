@@ -1,11 +1,12 @@
 import * as express from 'express';
-import {Server} from 'http'
+import * as http from 'http'
+import * as io from 'socket.io';
 
 import { provideSingleton, multiInject, inject } from '../../ioc/ioc';
 import TYPES from '../../constant/types';
 import { PreBuildInitializer } from './PreBuildInitializer';
 import { interfaces } from 'inversify-express-utils';
-import {interfaces as inversifyInterfaces} from 'inversify';
+import { interfaces as inversifyInterfaces } from 'inversify';
 import * as config from '../../config';
 import { ILogger } from '../logger/ILogger';
 import { PostInstantiateInitializer } from './PostInstantiateInitializer';
@@ -17,14 +18,12 @@ export class ApplicationServer {
     private express: interfaces.InversifyExpressServer;
     private preBuildInitializers: PreBuildInitializer[];
     private postInstantiateInitializers: PostInstantiateInitializer[];
-    private instance: express.Application;
-    private application: Server;
+    private expressRequestHandler: express.Application;
+    private server: http.Server;
     private logger: ILogger;
 
-    public constructor(
-        @multiInject(TYPES.PreBuildInitializer) preBuildInitializers: PreBuildInitializer[],
-        @inject(TYPES.ILogger) logger: ILogger
-    ) {
+    public constructor(@multiInject(TYPES.PreBuildInitializer) preBuildInitializers: PreBuildInitializer[],
+                       @inject(TYPES.ILogger) logger: ILogger) {
         this.preBuildInitializers = preBuildInitializers;
         this.logger = logger;
     }
@@ -35,19 +34,25 @@ export class ApplicationServer {
 
     public run(kernel: inversifyInterfaces.Kernel): void {
         this.initPreBuildInitializers();
-        this.instantiate();
+        this.instantiate(kernel);
         this.postInstantiateInitializers = kernel.getAll<PostInstantiateInitializer>(TYPES.PostInstantiateInitializer);
         this.initPostInstantiateInitializers();
     }
 
-    public getServer(): Server {
-        return this.application;
+    public getServer(): http.Server {
+        return this.server;
     }
 
-    protected instantiate(): void {
-        this.instance = this.express.build();
-        const port:number = config.url.port;
-        this.application = this.instance.listen(port, () => this.logger.log(`Server started at port: ${port}`));
+    protected instantiate(kernel: inversifyInterfaces.Kernel): void {
+        this.expressRequestHandler = this.express.build();
+
+        const port: number = config.url.port;
+        this.server = this
+            .expressRequestHandler
+            .listen(port, () => this.logger.log(`Server started at port: ${port}`));
+
+        const socketIO: SocketIO.Server = io(this.getServer());
+        kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
     }
 
     protected initPreBuildInitializers(): void {
@@ -59,6 +64,6 @@ export class ApplicationServer {
     protected initPostInstantiateInitializers(): void {
         this
             .postInstantiateInitializers
-            .map<void>((initializer: PostInstantiateInitializer) => initializer.applyTo(this.application));
+            .map<void>((initializer: PostInstantiateInitializer) => initializer.applyTo(this.server));
     }
 }

@@ -11,10 +11,6 @@ const applicationServer: ApplicationServer
           = kernel.get<ApplicationServer>(TYPES.ApplicationServer);
 
 applicationServer.setExpress(server);
-
-const socketIO: SocketIO.Server = io(applicationServer.getServer());
-kernel.bind<SocketIO.Server>(TYPES.SocketIO).toConstantValue(socketIO);
-
 applicationServer.run(kernel);
 
 exports = module.exports = applicationServer.getServer();

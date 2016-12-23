@@ -9,7 +9,7 @@ export class JwtTokenSocketTokenUserIdentifier implements ISocketTokenUserIdenti
     }
 
     public identify(token: string): User {
-
+        throw new Error('gtfo');
     }
 
 }

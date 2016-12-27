@@ -1,5 +1,5 @@
 import { interfaces } from 'inversify-express-utils';
 
 export interface PreBuildInitializer {
-    applyTo(express: interfaces.InversifyExpressServer): void;
+    applyTo(express: interfaces.InversifyExpressServer): Promise<void>;
 }

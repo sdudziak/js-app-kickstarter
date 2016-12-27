@@ -25,7 +25,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         if (this.providers[provider.type()]) {
             throw new Error('Event Manager provider already registered');
         }
-        this.logger.log('Registered "' + provider.type() + '" event manager provider', SEVERITY.info);
+        this.logger.log('Registered "' + provider.type() + '" event manager provider', 'info');
         this.providers[provider.type()] = provider;
     }
 

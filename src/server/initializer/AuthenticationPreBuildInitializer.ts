@@ -23,13 +23,15 @@ export class AuthenticationPreBuildInitializer implements PreBuildInitializer {
         this.authenticationStrategies = authenticationStrategies;
     }
 
-    public applyTo(express: interfaces.InversifyExpressServer): void {
-        this.logger.log('Applying passport to Authentication service');
-        this.authenticationService.setProvider(passport);
-
-        this.authenticationStrategies.map<void>((strategy: IStrategy) => {
-            this.logger.log(`Applying ${strategy.name()} strategy to Authentication service`);
-            this.authenticationService.addAuthStrategy(strategy);
+    public applyTo(express: interfaces.InversifyExpressServer): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.logger.log('Applying passport to Authentication service');
+            this.authenticationService.setProvider(passport);
+            this.authenticationStrategies.map<void>((strategy: IStrategy) => {
+                this.logger.log(`Applying ${strategy.name()} strategy to Authentication service`);
+                this.authenticationService.addAuthStrategy(strategy);
+            });
+            resolve(undefined);
         });
     }
 }

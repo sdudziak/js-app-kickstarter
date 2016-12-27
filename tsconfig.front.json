@@ -2,13 +2,18 @@
   "compilerOptions": {
     "target":                 "es5",
     "module":                 "commonjs",
+    "jsx":                    "react",
+    "outDir":                 "./dist/",
+    "lib":                    [
+      "es5",
+      "es2015.promise",
+      "dom"
+    ],
     "sourceMap":              true,
     "noImplicitAny":          true,
     "removeComments":         true,
-    "outDir":                 "./dist/",
     "pretty":                 true,
-    "experimentalDecorators": true,
-    "jsx":                    "react"
+    "experimentalDecorators": true
   },
   "include":         [
     "src/frontend/**/*"

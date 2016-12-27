@@ -5,6 +5,11 @@
     "outDir":                 "./dist/",
     "jsx":                    "react",
     "moduleResolution":       "node",
+    "lib":                    [
+      "es6",
+      "es2015.promise",
+      "dom"
+    ],
     "sourceMap":              true,
     "noImplicitAny":          true,
     "removeComments":         true,

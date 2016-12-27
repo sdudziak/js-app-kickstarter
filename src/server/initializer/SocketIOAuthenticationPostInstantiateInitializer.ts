@@ -19,22 +19,23 @@ export class SocketIOAuthenticationPostInstantiateInitializer implements PostIns
     }
 
 
-    public applyTo(server: Server): void {
-        this.logger.log('Initializing SocketIO Authentication');
-        this.socketIO.use((socket: any, next: NextFunction) => {
-            if (!socket.handshake.query.token) {
-                socket.disconnect(true);
-            }
-            const result = jwt.verify(socket.handshake.query.token.split(' ')[1], config.app.secret);
-            if (!result) {
-                next(new Error('Invalid token'));
-                socket.disconnect(true);
+    public applyTo(server: Server): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.logger.log('Initializing SocketIO Authentication');
+            this.socketIO.use((socket: any, next: NextFunction) => {
+                if (!socket.handshake.query.token) {
+                    socket.disconnect(true);
+                }
+                const result = jwt.verify(socket.handshake.query.token.split(' ')[1], config.app.secret);
+                if (!result) {
+                    next(new Error('Invalid token'));
+                    socket.disconnect(true);
 
-            }
-            socket['user_id'] = result.id;
-            next();
+                }
+                socket['user_id'] = result.id;
+                resolve(next());
+            });
         });
-
     }
 
 }

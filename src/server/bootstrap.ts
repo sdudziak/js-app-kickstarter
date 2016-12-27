@@ -1,5 +1,4 @@
 import { interfaces, InversifyExpressServer } from 'inversify-express-utils'
-import * as io from 'socket.io';
 import { kernel } from './ioc/ioc';
 import './ioc/loader';
 import TYPES from './constant/types';

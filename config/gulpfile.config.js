@@ -11,8 +11,8 @@ gulpConfig.path.frontend = gulpConfig.path.source + 'frontend/';
 gulpConfig.path.backend  = gulpConfig.path.source + 'backend/';
 
 gulpConfig.path.buildDest         = tsconfig.compilerOptions.outDir;
-gulpConfig.path.buildDestFront    = gulpConfig.path.buildDest + '/public/';
-gulpConfig.path.buildDestFrontCss = gulpConfig.path.buildDestFront + '/css/';
+gulpConfig.path.buildDestFront    = gulpConfig.path.buildDest + 'public/';
+gulpConfig.path.buildDestFrontCss = gulpConfig.path.buildDestFront + 'css/';
 
 gulpConfig.webpack.entrypoint = gulpConfig.path.frontend + 'app.tsx';
 

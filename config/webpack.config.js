@@ -1,9 +1,9 @@
-var gulpConfig = require('./gulpfile.config');
-var path       = require('path');
-var pkg        = require('../package.json');
-var webpack    = require('webpack');
+const gulpConfig    = require('./gulpfile.config');
+const path          = require('path');
+const webpack       = require('webpack');
+// const CheckerPlugin = require('awesome-typescript-loader');
 
-var config = {
+const config = {
     entry:      {
         vendor: ['react', 'react-dom', 'rx', 'jquery'],
         bundle: gulpConfig.webpack.entrypoint
@@ -15,7 +15,7 @@ var config = {
     },
     module:     {
         loaders:    [{
-            test:    /\.ts(x?)$/,
+            test:    /\.(ts|tsx)$/,
             loaders: ['babel?plugins[]=transform-runtime', 'awesome-typescript-loader']
         }, {
             test:    /\.json$/,
@@ -37,6 +37,11 @@ var config = {
             test: /\.js$/, loader: "source-map-loader"
         }],
         noParse:    [/\.md$/]
+    },
+    ts:         {
+        configFileName: "tsconfig.front.json",
+        // skipLibCheck:   true,
+        // transpileOnly:  true
     },
     externals:  ['ws', 'fs'],
     sassLoader: {
@@ -69,6 +74,7 @@ var config = {
     //     "react-dom": "ReactDOM"
     // },
     plugins:    [
+        // new CheckerPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             names:    ['vendor'],
             filename: '[name].js'

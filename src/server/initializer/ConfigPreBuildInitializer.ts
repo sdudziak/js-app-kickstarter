@@ -16,24 +16,28 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
 
     private logger: ILogger;
 
-    public constructor(@inject(TYPES.ILogger) logger:ILogger) {
+    public constructor(@inject(TYPES.ILogger) logger: ILogger) {
         this.logger = logger;
     }
 
-    public applyTo(server: interfaces.InversifyExpressServer): void {
-        server.setConfig((app: express.Application) => {
-            this.logger.log('Initializing passport');
-            app.use(passport.initialize());
+    public applyTo(server: interfaces.InversifyExpressServer): Promise<void> {
+        return new Promise<void>((resolve) => {
+            server.setConfig((app: express.Application) => {
+                this.logger.log('Initializing passport');
+                app.use(passport.initialize());
 
-            this.logger.log('Initializing body-parser');
-            app.use(bodyParser.urlencoded({ extended: true }));
-            app.use(bodyParser.json());
+                this.logger.log('Initializing body-parser');
+                app.use(bodyParser.urlencoded({ extended: true }));
+                app.use(bodyParser.json());
 
-            this.logger.log('Initializing helmet');
-            app.use(helmet());
+                this.logger.log('Initializing helmet');
+                app.use(helmet());
 
-            this.logger.log('Initializing static paths ' + __dirname);
-            app.use('/' + config.path.public, express.static(path.resolve(__dirname, '..', config.path.public)));
+                const publicPath: string = path.resolve(__dirname, '..', config.path.public);
+                this.logger.log('Initializing static paths ' + publicPath);
+                app.use('/' + config.path.public, express.static(publicPath));
+            });
+            resolve();
         });
     }
 

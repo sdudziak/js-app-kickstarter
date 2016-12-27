@@ -1,22 +1,22 @@
-var gulp        = require('gulp');
-var source      = require('vinyl-source-stream');
-var uglify      = require('gulp-uglify');
-var buffer      = require('vinyl-buffer');
-var notify      = require('gulp-notify');
-var nodemon     = require('gulp-nodemon');
-var livereload  = require('gulp-livereload');
-var typescript  = require('gulp-typescript');
-var sass        = require('gulp-sass');
-var webpack     = require('webpack-stream');
-var browserSync = require('browser-sync');
-var superstatic = require('superstatic');
+const gulp        = require('gulp');
+const source      = require('vinyl-source-stream');
+const uglify      = require('gulp-uglify');
+const buffer      = require('vinyl-buffer');
+const notify      = require('gulp-notify');
+const nodemon     = require('gulp-nodemon');
+const livereload  = require('gulp-livereload');
+const typescript  = require('gulp-typescript');
+const sass        = require('gulp-sass');
+const webpack     = require('webpack-stream');
+const browserSync = require('browser-sync');
+const superstatic = require('superstatic');
 
 
-var gulpConfig    = require('./config/gulpfile.config');
-var webpackConfig = require('./config/webpack.config');
+const gulpConfig    = require('./config/gulpfile.config');
+const webpackConfig = require('./config/webpack.config');
 
-var tsProject      = typescript.createProject('tsconfig.json', {declaration: true});
-var tsProjectFront = typescript.createProject('tsconfig.front.json', {declaration: true});
+const tsProject      = typescript.createProject('tsconfig.json', {declaration: true});
+const tsProjectFront = typescript.createProject('tsconfig.front.json', {declaration: true});
 
 /* BACKEND */
 gulp.task(gulpConfig.tasks.backend.build, function () {
@@ -40,7 +40,6 @@ gulp.task(gulpConfig.tasks.frontend.build, function () {
     // lib, and lib/queries.
     // except lib.d.ts. Maybe for future use:  { base: './src/' }
     var tsResult = tsProjectFront.src().pipe(tsProjectFront());
-
     return tsResult.js.pipe(gulp.dest(gulpConfig.path.buildDestFront));
 });
 

@@ -1,6 +1,6 @@
-const gulpConfig    = require('./gulpfile.config');
-const path          = require('path');
-const webpack       = require('webpack');
+const gulpConfig = require('./gulpfile.config');
+const path       = require('path');
+const webpack    = require('webpack');
 // const CheckerPlugin = require('awesome-typescript-loader');
 
 const config = {
@@ -10,7 +10,7 @@ const config = {
     },
     output:     {
         path:       __dirname + '/dist',
-        filename:   "[name].js",
+        filename:   '[name].js',
         publicPath: 'public/'
     },
     module:     {

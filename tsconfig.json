@@ -15,7 +15,8 @@
     "removeComments":         true,
     "pretty":                 true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata":  true
+    "emitDecoratorMetadata":  true,
+    "skipLibCheck":           true
   },
   "include":         [
     "src/server/**/*"

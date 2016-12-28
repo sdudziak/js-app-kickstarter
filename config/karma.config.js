@@ -8,7 +8,11 @@ module.exports = function (config) {
             "karma-chai",
             "karma-sinon",
             "karma-phantomjs-launcher",
+            "karma-chrome-launcher",
             "karma-firefox-launcher",
+            "karma-mocha-reporter",
+            "karma-spec-reporter",
+            "karma-tape-reporter"
         ],
         basePath: '',
         frameworks: ['mocha', 'chai', 'sinon'],
@@ -23,13 +27,19 @@ module.exports = function (config) {
             module: webpackConfig.module,
             resolve: webpackConfig.resolve
         },
-        reporters: ['progress'],
+        mime: {
+            'text/x-typescript': ['ts','tsx']
+        },
+        reporters: ['mocha'],
+        loggers: [{type: 'console'}],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['PhantomJS'],
+        autoWatchBatchDelay: 250,
+        browsers: ['Chrome'],
         singleRun: false,
+        reportSlowerThan: 50,
         concurrency: Infinity
     })
 };

@@ -1,9 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 .bin
-.bin/
 node_modules/
 /dist/
+/src/**/*.js
+/test/**/*.js
 .ctags
 .dockerignore
 .jshintrc

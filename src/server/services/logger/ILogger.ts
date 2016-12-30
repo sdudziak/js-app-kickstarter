@@ -6,6 +6,6 @@ export const SEVERITY = {
 };
 
 export interface ILogger {
-    log(message: string, severity?: "info" | "warning" | "error" | "debug", data?: any): void;
+    log(message: string, severity?: string, data?: any): void;
     debug(examined: any): void;
 }

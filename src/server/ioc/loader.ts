@@ -8,7 +8,7 @@ import '../services/application/ApplicationServer';
 import '../services/authentication/passport/PassportAuthentication';
 import '../services/cryptographic/Cryptographic';
 import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUsers';
-import '../services/logger/ConsoleLogger';
+import '../services/logger/WinstonLogger';
 import '../services/templating/PugTemplating'
 import '../services/user/UserService';
 

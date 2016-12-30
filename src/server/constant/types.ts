@@ -1,19 +1,20 @@
 const TYPES = {
+    ApplicationServer:          Symbol('ApplicationServer'),
     IAuthenticationService:     Symbol('IAuthenticationService'),
-    IStrategy:                  Symbol('IStrategy'),
-    IPersistenceClient:         Symbol('IPersistenceClient'),
     ICryptographicService:      Symbol('ICryptographicService'),
-    User:                       Symbol('User'),
-    IUserService:               Symbol('IUserService'),
+    IEventListener:             Symbol('IEventListener'),
     IEventManager:              Symbol('IEventManager'),
     IEventManagerProvider:      Symbol('IEventManagerProvider'),
-    SocketIO:                   Symbol('SocketIO.Server'),
     ILogger:                    Symbol('ILogger'),
-    IEventListener:             Symbol('IEventListener'),
+    IPersistenceClient:         Symbol('IPersistenceClient'),
     ISocketConnectedUsers:      Symbol('ISocketConnectedUsers'),
-    ApplicationServer:          Symbol('ApplicationServer'),
-    PreBuildInitializer:        Symbol('PreBuildInitializer'),
+    IStrategy:                  Symbol('IStrategy'),
+    ITemplating:                Symbol('ITemplating'),
+    IUserService:               Symbol('IUserService'),
     PostInstantiateInitializer: Symbol('PostInstantiateInitializer'),
+    PreBuildInitializer:        Symbol('PreBuildInitializer'),
+    SocketIO:                   Symbol('SocketIO.Server'),
+    User:                       Symbol('User'),
 };
 
 export default TYPES;

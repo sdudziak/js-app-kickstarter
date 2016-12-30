@@ -8,7 +8,7 @@ var gulpConfig = {
 
 gulpConfig.path.source   = './src/';
 gulpConfig.path.frontend = gulpConfig.path.source + 'frontend/';
-gulpConfig.path.backend  = gulpConfig.path.source + 'backend/';
+gulpConfig.path.backend  = gulpConfig.path.source + 'server/';
 
 gulpConfig.path.buildDest         = tsconfig.compilerOptions.outDir;
 gulpConfig.path.buildDestFront    = gulpConfig.path.buildDest + 'public/';

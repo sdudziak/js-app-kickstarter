@@ -23,14 +23,16 @@ gulp.task(gulpConfig.tasks.backend.build, function () {
     // instead of gulp.src(["src/**/*.ts", "src/**/**/*.ts"])
     // lib, and lib/queries.
     // except lib.d.ts. Maybe for future use:  { base: './src/' }
-    var tsResult = tsProject.src().pipe(tsProject());
+    const tsResult = tsProject.src().pipe(tsProject());
 
     return tsResult.js.pipe(gulp.dest(gulpConfig.path.buildDest));
 });
 
 gulp.task(gulpConfig.tasks.backend.assets, function () {
-    return gulp.src(gulpConfig.path.backend + '**/*.json')
-        .pipe(gulp.dest(gulpConfig.path.buildDest));
+    return gulp.src([
+        gulpConfig.path.backend + '**/*.json',
+        gulpConfig.path.backend + '**/*.pug',
+    ]).pipe(gulp.dest(gulpConfig.path.buildDest));
 });
 /* FINISH BACKEND */
 
@@ -113,7 +115,8 @@ gulp.task(gulpConfig.tasks.common.watch, function () {
         gulpConfig.path.frontend + '**/**/*.tsx',
         gulpConfig.path.frontend + 'assets/**/**/**',
         gulpConfig.path.frontend + '**/*.html',
-        gulpConfig.path.frontend + '**/*.scss'
+        gulpConfig.path.frontend + '**/*.scss',
+        gulpConfig.path.backend + '**/*.pug'
     ], [
         gulpConfig.tasks.common.frontend
     ]);

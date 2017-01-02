@@ -1,6 +1,7 @@
 const ROUTES = {
     app:          '/',
-    user:         '/user',
-    authenticate: '/login'
+    authenticate: '/login',
+    user:         '/user'
 };
+
 export default ROUTES;

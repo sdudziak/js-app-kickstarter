@@ -8,4 +8,5 @@ export const SEVERITY = {
 export interface ILogger {
     log(message: string, severity?: string, data?: any): void;
     debug(examined: any): void;
+    error(message: string, data?: any): void;
 }

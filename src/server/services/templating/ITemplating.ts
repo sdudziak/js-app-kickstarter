@@ -4,5 +4,5 @@ export interface ITemplating {
      * @param templateName remember that this will be relative path to <root_dir>/src/server/view
      * @param options
      */
-    renderFile(templateName: string, options?: any): string;
+    render(templateName: string, options?: any): string;
 }

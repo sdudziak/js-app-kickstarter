@@ -10,14 +10,13 @@ import TYPES from '../constant/types';
 import * as config from '../config';
 import { PreBuildInitializer } from '../services/application/PreBuildInitializer';
 import { ILogger } from '../services/logger/ILogger';
+import { IExceptionHandler } from '../utils/ExceptionHandler/IExceptionHandler';
 
 @provideSingleton(TYPES.PreBuildInitializer)
 export class ConfigPreBuildInitializer implements PreBuildInitializer {
 
-    private logger: ILogger;
-
-    public constructor(@inject(TYPES.ILogger) logger: ILogger) {
-        this.logger = logger;
+    public constructor(@inject(TYPES.ILogger) private logger: ILogger,
+                       @inject(TYPES.IExceptionHandler) private exceptionHandler: IExceptionHandler) {
     }
 
     public applyTo(server: interfaces.InversifyExpressServer): Promise<void> {
@@ -27,7 +26,7 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
                 app.use(passport.initialize());
 
                 this.logger.log('Initializing body-parser');
-                app.use(bodyParser.urlencoded({ extended: true }));
+                app.use(bodyParser.urlencoded({extended: true}));
                 app.use(bodyParser.json());
 
                 this.logger.log('Initializing helmet');
@@ -36,6 +35,9 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
                 const publicPath: string = path.resolve(__dirname, '..', config.path.public);
                 this.logger.log('Initializing static paths ' + publicPath);
                 app.use('/' + config.path.public, express.static(publicPath));
+
+                this.logger.log('Initializing exception handler');
+                app.use(this.exceptionHandler.handle.bind(this.exceptionHandler));
             });
             resolve();
         });

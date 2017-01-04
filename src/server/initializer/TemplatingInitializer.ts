@@ -15,7 +15,7 @@ export class TemplatingInitializer implements PreBuildInitializer {
 
     applyTo(express: interfaces.InversifyExpressServer): Promise<void> {
         this.logger.log('Initalizing templating engine');
-        return new Promise<void>((resolve) => this.templating.init());
+        return new Promise<void>((resolve) => resolve(this.templating.init()));
     }
 
 }

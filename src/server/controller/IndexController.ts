@@ -10,6 +10,7 @@ import { NextFunction } from 'express-serve-static-core';
 import ROUTES from '../config/routes';
 import TAGS from '../constant/tags';
 import TYPES from '../constant/types';
+import { CONFIG } from '../config/templating';
 
 @provideNamed(TYPE.Controller, TAGS.IndexController)
 @Controller(ROUTES.app)
@@ -23,11 +24,13 @@ export class IndexController {
     public get(req: express.Request, res: express.Response, next: NextFunction): void {
         passport.authenticate('jwt', ((error: any, user: any, info: any) => {
             if (user) {
-                return res.send(this.templating.renderFile('index.pug', {
+                res.send(this.templating.render(CONFIG.templates.index, {
                     name: user.name
                 })).end()
+            } else {
+                res.send(this.templating.render(CONFIG.templates.indexUnauthorized)).end()
             }
-            return res.send(this.templating.renderFile('index-unauthorized.pug')).end()
+            next();
         }))(req, res, next);
     }
 

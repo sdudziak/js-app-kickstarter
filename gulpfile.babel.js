@@ -31,7 +31,7 @@ gulp.task(gulpConfig.tasks.backend.build, function () {
 gulp.task(gulpConfig.tasks.backend.assets, function () {
     return gulp.src([
         gulpConfig.path.backend + '**/*.json',
-        gulpConfig.path.backend + '**/*.pug',
+        gulpConfig.path.backend + '**/*.hbs',
     ]).pipe(gulp.dest(gulpConfig.path.buildDest));
 });
 /* FINISH BACKEND */
@@ -116,7 +116,7 @@ gulp.task(gulpConfig.tasks.common.watch, function () {
         gulpConfig.path.frontend + 'assets/**/**/**',
         gulpConfig.path.frontend + '**/*.html',
         gulpConfig.path.frontend + '**/*.scss',
-        gulpConfig.path.backend + '**/*.pug'
+        gulpConfig.path.backend + '**/*.hbs'
     ], [
         gulpConfig.tasks.common.frontend
     ]);

@@ -31,4 +31,5 @@ import '../services/authentication/passport/strategy/JWTStrategy';
 // utils
 import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';
 import '../utils/ExceptionHandler/ExpressExceptionHandler';
-// Application
+import '../utils/ExceptionHandler/ExceptionToRequestMapper/ExceptionToRequestMapperStrategyDispatcher';
+import '../utils/ExceptionHandler/ExceptionToRequestMapper/PropertyProcessorExceptionToRequestErrorMapperStrategy';

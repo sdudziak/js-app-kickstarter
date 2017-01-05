@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Kernel, inject, interfaces, multiInject } from 'inversify';
-export { interfaces} from 'inversify';
+export { interfaces } from 'inversify';
 
 import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from 'inversify-binding-decorators';
 import { makeLoggerMiddleware, textSerializer } from 'inversify-logger-middleware';
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
     kernel.applyMiddleware(logger);
 }
 
-let provide        = makeProvideDecorator(kernel);
+let provide = makeProvideDecorator(kernel);
 let fluentProvider = makeFluentProvideDecorator(kernel);
 
 let provideNamed = function (identifier: any, name: string) {
@@ -33,4 +33,21 @@ let provideNamedSingleton = function (identifier: any, name: string) {
         .done();
 };
 
-export { kernel, autoProvide, provide, provideNamed, inject, multiInject, provideSingleton, provideNamedSingleton };
+let provideTaggedSingleton = function (identifier: any, tag: string, value: any) {
+    return fluentProvider(identifier)
+        .inSingletonScope()
+        .whenTargetTagged(tag, value)
+        .done();
+};
+
+export {
+    kernel,
+    autoProvide,
+    provide,
+    provideNamed,
+    inject,
+    multiInject,
+    provideSingleton,
+    provideNamedSingleton,
+    provideTaggedSingleton
+};

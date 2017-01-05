@@ -1,9 +1,16 @@
-const TAGS = {
+const NAMES = {
     IndexController:              'IndexController',
     UserController:               'UserController',
     LoginController:              'LoginController',
 
-    SocketIOEventManagerProvider: 'SocketIOEventManagerProvider'
+    SocketIOEventManagerProvider: 'SocketIOEventManagerProvider',
+    ExceptionToRequestMapper: {
+        strategyDispatcher: 'ExceptionToRequestMapper.strategyDispatcher'
+    }
 };
 
-export default TAGS;
+export const TAGS = {
+    ExceptionToRequestMapperStrategy: 'ExceptionToRequestMapperStrategy'
+};
+
+export default NAMES;

@@ -15,7 +15,10 @@ const TYPES = {
     PreBuildInitializer:        Symbol('PreBuildInitializer'),
     SocketIO:                   Symbol('SocketIO.Server'),
     User:                       Symbol('User'),
-    IExceptionHandler:          Symbol('IExceptionHandler'),
+
+    IExceptionHandler:                      Symbol('IExceptionHandler'),
+    IExceptionToRequestErrorMapper:         Symbol('IExceptionToRequestErrorMapper'),
+    IExceptionToRequestErrorMapperStrategy: Symbol('IExceptionToRequestErrorMapperStrategy'),
 };
 
 export default TYPES;

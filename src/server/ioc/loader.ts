@@ -10,6 +10,7 @@ import '../services/cryptographic/Cryptographic';
 import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUsers';
 import '../services/logger/WinstonLogger';
 import '../services/templating/HandlebarsTemplating'
+import '../services/templating/helper/GlobalHbsVariablesHelper';
 import '../services/user/UserService';
 
 import '../initializer/AuthenticationPreBuildInitializer';

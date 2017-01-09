@@ -32,7 +32,7 @@ export class WinstonLogger implements ILogger {
         this.logger.debug(examined);
     }
 
-    error(message: string, data?: any): void {
+    public error(message: string, data?: any): void {
         this.logger.error(message, data);
     }
 }

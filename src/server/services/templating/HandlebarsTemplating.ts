@@ -1,16 +1,18 @@
-import * as path from 'path';
-import * as fs from 'fs';
+import { compile, registerHelper } from 'handlebars';
 import { map } from 'lodash';
-import { compile } from 'handlebars';
+
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { CONFIG } from '../../config/templating';
 import TYPES from '../../constant/types';
-import { provideSingleton, inject } from '../../ioc/ioc';
-import { ITemplating } from './ITemplating';
+import { inject, multiInject, provideSingleton } from '../../ioc/ioc';
 import { IInitializable } from '../application/IInitializable';
 import { ILogger } from '../logger/ILogger';
+import { ITemplating } from './ITemplating';
+import { ITemplatingHelper } from './ITemplatingHelper';
 
-interface TemplateData {
+interface ITemplateData {
     name: string,
     template: string
 }
@@ -19,9 +21,10 @@ interface TemplateData {
 export class HandlebarsTemplating implements ITemplating, IInitializable {
 
     private basePath: string;
-    private compiledTemplates: {[templateName: string]: HandlebarsTemplateDelegate};
+    private compiledTemplates: { [templateName: string]: HandlebarsTemplateDelegate };
 
-    public constructor(@inject(TYPES.ILogger) private logger: ILogger) {
+    public constructor(@multiInject(TYPES.ITemplatingHelper) private templateHelpers: ITemplatingHelper[],
+                       @inject(TYPES.ILogger) private logger: ILogger) {
         this.compiledTemplates = {};
         this.basePath = CONFIG.basePath;
     }
@@ -31,28 +34,29 @@ export class HandlebarsTemplating implements ITemplating, IInitializable {
     }
 
     public init() {
-        Promise.all<TemplateData>(
+
+        this.templateHelpers.forEach((templateHelper: ITemplatingHelper) =>
+            registerHelper(templateHelper.helperName(), templateHelper.helperMethod()));
+
+        Promise.all<ITemplateData>(
             map(CONFIG.templates, (templateName: string) => this.loadSingleTemplateFile(templateName))
-        ).then((templatesData: TemplateData[]) => {
-            templatesData.forEach((templateData: TemplateData) => {
-                this.logger.log('Compiling template: ' + templateData.name);
-                this.compiledTemplates[templateData.name] = compile(templateData.template);
-            });
-        }).catch((rejectReason: NodeJS.ErrnoException) => {
+        ).then((templatesData: ITemplateData[]) =>
+            templatesData.forEach((templateData: ITemplateData) =>
+                this.compiledTemplates[templateData.name] = compile(templateData.template))
+        ).catch((rejectReason: NodeJS.ErrnoException) => {
             this.logger.error('Cannot initialize template!', rejectReason);
         });
     }
 
-    private loadSingleTemplateFile(templateName: string): Promise <TemplateData> {
-        return new Promise<TemplateData>((resolve, reject) => {
+    private loadSingleTemplateFile(templateName: string): Promise <ITemplateData> {
+        return new Promise<ITemplateData>((resolve, reject) => {
             const templateFullPath: string = path.resolve(this.basePath, templateName);
-            fs.readFile(templateFullPath, (error: NodeJS.ErrnoException, data: Buffer) => {
-                this.logger.log('Reading template: ' + templateName);
+            fs.readFile(templateFullPath, (error: NodeJS.ErrnoException, data: Buffer) =>
                 error ? reject(error) : resolve({
                         name:     templateName,
                         template: data.toString('utf-8')
                     })
-            });
+            );
         });
     }
 }

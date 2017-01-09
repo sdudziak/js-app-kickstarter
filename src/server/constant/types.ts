@@ -10,6 +10,7 @@ const TYPES = {
     ISocketConnectedUsers:      Symbol('ISocketConnectedUsers'),
     IStrategy:                  Symbol('IStrategy'),
     ITemplating:                Symbol('ITemplating'),
+    ITemplatingHelper:          Symbol('ITemplatingHelper'),
     IUserService:               Symbol('IUserService'),
     PostInstantiateInitializer: Symbol('PostInstantiateInitializer'),
     PreBuildInitializer:        Symbol('PreBuildInitializer'),

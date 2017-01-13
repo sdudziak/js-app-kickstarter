@@ -11,6 +11,7 @@ import '../services/eventManager/provider/SocketConnectedUsers/SocketConnectedUs
 import '../services/logger/WinstonLogger';
 import '../services/templating/HandlebarsTemplating'
 import '../services/templating/helper/GlobalHbsVariablesHelper';
+import '../services/templating/helper/JsonFormatterHelper';
 import '../services/user/UserService';
 
 import '../initializer/AuthenticationPreBuildInitializer';

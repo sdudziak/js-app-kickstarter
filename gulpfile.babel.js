@@ -113,8 +113,7 @@ gulp.task(gulpConfig.tasks.common.watch, function () {
         gulpConfig.path.frontend + '**/**/*.ts',
         gulpConfig.path.frontend + '**/*.tsx',
         gulpConfig.path.frontend + '**/**/*.tsx',
-        gulpConfig.path.frontend + 'assets/**/**/**',
-        gulpConfig.path.frontend + '**/*.html',
+        gulpConfig.path.frontend + 'assets/**/*',
         gulpConfig.path.frontend + '**/*.scss',
         gulpConfig.path.backend + '**/*.hbs'
     ], [

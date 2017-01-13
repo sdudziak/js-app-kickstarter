@@ -23,6 +23,7 @@ This project is a fully working bootstrap for developping an express/mongo api w
 
 ## TODO/ coming soon
  - unit test
+ - documentation
  - inversify config instead of `provideX` annotation ?
  - modules system with extendable inversify config?
  

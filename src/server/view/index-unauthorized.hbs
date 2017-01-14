@@ -34,7 +34,7 @@
         <div id="top"></div>
 
         <!-- /.parallax full screen background image -->
-        <div class="fullscreen landing parallax" style="background-image:url('images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
+        <div class="fullscreen landing parallax" style="background-image:url('../public/assets/images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
 
             <div class="overlay">
                 <div class="container">
@@ -42,16 +42,17 @@
                         <div class="col-md-7">
 
                             <!-- /.logo -->
-                            <div class="logo wow fadeInDown"> <a href=""><img src="public/assets/images/logo.png" alt="logo"></a></div>
+                            <div class="logo wow fadeInDown"> <a href=""><img src="{{global.config.app.url}}/public/assets/images/logo.png" alt="logo"></a></div>
 
                             <!-- /.main title -->
                             <h1 class="wow fadeInLeft">
-                                Beautiful High Converting Landing Page
+                                Make your home budget great
                             </h1>
 
                             <!-- /.header paragraph -->
                             <div class="landing-text wow fadeInUp">
-                                <p>Backyard is a modern and customizable landing page template designed to increase conversion of your product. Backyard is flexible to suit any kind of your business. Try now and join with our happy customers!</p>
+                                <!--<p>Lorem ipsum dolor sit amet!</p>-->
+                                <p>{{json global.config}}</p>
                             </div>
 
                             <!-- /.header button -->
@@ -69,7 +70,7 @@
 
                             <div class="signup-header wow fadeInUp">
                                 <h3 class="form-title text-center">GET STARTED</h3>
-                                <form class="form-header" action="//" role="form" method="POST" id="#">
+                                <form class="form-header" action="//" role="form" method="POST" id="login-form">
                                     <input type="hidden" name="u" value="503bdae81fde8612ff4944435">
                                     <input type="hidden" name="id" value="bfdba52708">
                                     <div class="form-group">
@@ -232,7 +233,7 @@
 
         <!-- /.download section -->
         <div id="download">
-            <div class="action fullscreen parallax" style="background-image:url('images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
+            <div class="action fullscreen parallax" style="background-image:url('../public/assets/images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
                 <div class="overlay">
                     <div class="container">
                         <div class="col-md-8 col-md-offset-2 col-sm-12 text-center">
@@ -436,7 +437,7 @@
                                 <div class="client-pic text-center">
 
                                     <!-- /.client photo -->
-                                    <img src="public/assets/images/testi1.png" alt="client">
+                                    <img src="public/assets/images/testi1.jpg" alt="client">
                                 </div>
                                 <div class="box">
 
@@ -455,7 +456,7 @@
                                 <div class="client-pic text-center">
 
                                     <!-- /.client photo -->
-                                    <img src="public/assets/images/testi2.png" alt="client">
+                                    <img src="public/assets/images/testi2.jpg" alt="client">
                                 </div>
                                 <div class="box">
 
@@ -474,7 +475,7 @@
                                 <div class="client-pic text-center">
 
                                     <!-- /.client photo -->
-                                    <img src="public/assets/images/testi3.png" alt="client">
+                                    <img src="public/assets/images/testi3.jpg" alt="client">
                                 </div>
                                 <div class="box">
 
@@ -496,7 +497,7 @@
 
         <!-- /.contact section -->
         <div id="contact">
-            <div class="contact fullscreen parallax" style="background-image:url('images/bg.jpg');" data-img-width="2000" data-img-height="1334" data-diff="100">
+            <div class="contact fullscreen parallax" style="background-image:url('../public/assets/images/bg.jpg');" data-img-width="2000" data-img-height="1334" data-diff="100">
                 <div class="overlay">
                     <div class="container">
                         <div class="row contact-row">

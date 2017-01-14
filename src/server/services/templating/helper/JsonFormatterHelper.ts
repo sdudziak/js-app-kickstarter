@@ -7,19 +7,15 @@ import { ITemplatingHelper } from '../ITemplatingHelper';
 @provideSingleton(TYPES.ITemplatingHelper)
 export class GlobalHbsVariablesHelper implements ITemplatingHelper {
     public helperName(): string {
-        return 'global';
+        return 'json';
     }
 
     public helperMethod(): Function {
-        const config: any = {
-            config: {
-                app: {
-                    url: CONFIG.url.app
-                }
-            }
-        };
-        console.log(config);
-        return () => config;
+        return (context: any) => {
+            console.log(context);
+            return JSON.stringify(context);
+        }
+
     }
 
 }

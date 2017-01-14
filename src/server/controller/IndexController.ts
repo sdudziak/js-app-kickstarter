@@ -1,5 +1,4 @@
 import * as express from 'express';
-import * as path from 'path';
 import passport = require('passport');
 
 import { Controller, Get, Post, TYPE } from 'inversify-express-utils';

@@ -36,7 +36,7 @@ export class HandlebarsTemplating implements ITemplating, IInitializable {
     public init() {
 
         this.templateHelpers.forEach((templateHelper: ITemplatingHelper) =>
-            registerHelper(templateHelper.helperName(), templateHelper.helperMethod()));
+            registerHelper(templateHelper.helperName(), templateHelper.helperMethod().bind(this)));
 
         Promise.all<ITemplateData>(
             map(CONFIG.templates, (templateName: string) => this.loadSingleTemplateFile(templateName))

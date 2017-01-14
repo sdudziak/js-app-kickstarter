@@ -13,5 +13,4 @@ Dockerfile
 codeship-services.yml
 codeship-steps.yml
 docker-compose.yml
-
-!/src/**/assets/**/*
+!/src/*/assets/**/*

@@ -1,4 +1,4 @@
 export interface ITemplatingHelper {
     helperName(): string;
-    helperMethod(): Function;
+    helperMethod<Result>(context?: any): Result;
 }

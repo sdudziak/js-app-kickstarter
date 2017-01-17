@@ -25,15 +25,15 @@ export class IndexController {
             if (user) {
                 res.send(this.templating.render(CONFIG.templates.index, {
                     name: user.name
-                })).end()
+                })).end();
             } else {
-                res.send(this.templating.render(CONFIG.templates.indexUnauthorized)).end()
+                res.send(this.templating.render(CONFIG.templates.indexUnauthorized)).end();
             }
             next();
         }))(req, res, next);
     }
 
-    @Post('/abc')
+    @Post('/home')
     public abc(req: express.Request): string {
         return 'you need token to access here';
     }

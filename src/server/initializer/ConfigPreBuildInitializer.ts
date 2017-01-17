@@ -4,6 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
 import { interfaces } from 'inversify-express-utils';
+import * as session from 'express-session';
 
 import { inject, provideSingleton } from '../ioc/ioc';
 import TYPES from '../constant/types';
@@ -31,6 +32,11 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
 
                 this.logger.log('Initializing helmet');
                 app.use(helmet());
+
+                app.use(session({
+                    secret: config.app.secret,
+                    cookie: {}
+                }));
 
                 const publicPath: string = path.resolve(__dirname, '..', config.path.public);
                 this.logger.log('Initializing static paths ' + publicPath);

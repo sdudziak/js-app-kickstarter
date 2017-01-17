@@ -5,7 +5,8 @@ const webpack    = require('webpack');
 
 const config = {
     entry:      {
-        vendor: ['react', 'react-dom', 'rx', 'jquery'],
+        jquery: 'jquery',
+        vendor: ['react', 'react-dom', 'rx'],
         bundle: gulpConfig.webpack.entrypoint
     },
     output:     {
@@ -43,7 +44,6 @@ const config = {
         // skipLibCheck:   true,
         // transpileOnly:  true
     },
-    externals:  ['ws', 'fs'],
     sassLoader: {
         includePaths: [path.resolve(__dirname, './node_modules')]
     },
@@ -69,10 +69,12 @@ const config = {
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
-    // externals:  {
-    //     "react":     "React",
-    //     "react-dom": "ReactDOM"
-    // },
+    externals:  {
+        "react":     "React",
+        "react-dom": "ReactDOM",
+        ws:          'ws',
+        fs:          'fs'
+    },
     plugins:    [
         // new CheckerPlugin(),
         new webpack.optimize.CommonsChunkPlugin({

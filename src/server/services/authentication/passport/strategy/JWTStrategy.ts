@@ -20,9 +20,13 @@ export class JwtStrategy implements IStrategy {
 
     public constructor() {
         this._options = {
-            jwtFromRequest:    ExtractJwt.fromAuthHeader(),
-            secretOrKey:       config.app.secret,
-            passReqToCallback: true
+            jwtFromRequest:    this.fromExtractors([
+                this.fromCookie('token'),
+                this.fromSession('token'),
+                ExtractJwt.fromAuthHeader(),
+            ]),
+            passReqToCallback: true,
+            secretOrKey:       config.app.secret
         };
     }
 
@@ -48,8 +52,8 @@ export class JwtStrategy implements IStrategy {
     public authenticate(user: User): Promise<Token> {
         return new Promise((resolve: Function) => {
             const payload: { id: string, expireAt: number } = {
-                id:       user._id.toHexString(),
-                expireAt: Date.now() + config.app.tokenLifetime
+                expireAt: Date.now() + config.app.tokenLifetime,
+                id:       user._id.toHexString()
             };
             const token = jwt.sign(payload, config.app.secret);
 
@@ -76,5 +80,27 @@ export class JwtStrategy implements IStrategy {
         passport.serializeUser(this.serialize);
         passport.deserializeUser(this.deserialize);
         passport.use(this.name(), this.strategy);
+    }
+
+    private fromExtractors(extractors: Function[]) {
+
+        return (request: Express.Request) => {
+            let token: string | null = null;
+            let index: number = 0;
+            while (!token && index < extractors.length) {
+                token = extractors[index++].call(this, request);
+            }
+            return token;
+        }
+    };
+
+    private fromSession(fieldName: string) {
+        return (request: Express.Request) => request.session[fieldName] ? request.session[fieldName].toString() : null
+    }
+
+    private fromCookie(fieldName: string) {
+        return (request: Express.Request) => {
+            return request.cookies[fieldName] ? request.cookies[fieldName] : null
+        }
     }
 }

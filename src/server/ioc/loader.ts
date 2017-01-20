@@ -1,7 +1,7 @@
 // controllers
 import '../controller/IndexController';
 import '../controller/UserController';
-import '../controller/LoginController';
+import '../controller/Login/LoginController';
 
 // services
 import '../services/application/ApplicationServer';

@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
 import { interfaces } from 'inversify-express-utils';
@@ -27,15 +28,18 @@ export class ConfigPreBuildInitializer implements PreBuildInitializer {
                 app.use(passport.initialize());
 
                 this.logger.log('Initializing body-parser');
-                app.use(bodyParser.urlencoded({extended: true}));
+                app.use(bodyParser.urlencoded({ extended: true }));
                 app.use(bodyParser.json());
 
                 this.logger.log('Initializing helmet');
                 app.use(helmet());
+                app.use(cookieParser());
 
                 app.use(session({
-                    secret: config.app.secret,
-                    cookie: {}
+                    cookie:            { maxAge: 2628000000 },
+                    resave:            true,
+                    saveUninitialized: true,
+                    secret:            config.app.secret
                 }));
 
                 const publicPath: string = path.resolve(__dirname, '..', config.path.public);

@@ -16,7 +16,7 @@ $(function () {
 });
 
 /* scrollspy */
-$('body').scrollspy({ target: '#navbar-scroll' });
+$('body').scrollspy({target: '#navbar-scroll'});
 
 // Closes the Responsive Menu on Menu Item Click
 $('.navbar-collapse ul li a').click(function () {
@@ -40,7 +40,7 @@ $(document).ready(function () {
         autoHeight: true,
         singleItem: true
     });
-    $("#menu").sticky({ topSpacing: 0 });
+    $("#menu").sticky({topSpacing: 0});
     // site preloader -- also uncomment the div in the header and the css style for #preloader
     $(window).load(function () {
         $('#preloader').fadeOut('slow', function () {
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
     //Click event to scroll to top
     $('.scrollToTop').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 800);
+        $('html, body').animate({scrollTop: 0}, 800);
         return false;
     });
 
@@ -70,27 +70,10 @@ $(document).ready(function () {
             url:     "/login",
             data:    $('#login-form').serialize(),
             success: function (data) {
-                localStorage.setItem('token','JWT ' + data.token.token);
-                function customHeader(remoteinput, userinput) {
-
-                    var f    = document.createElement('form');
-                    f.action = '/';
-                    f.method = 'POST';
-                    f.target = '_self';
-
-                    var i   = document.createElement('input');
-                    i.type  = 'hidden';
-                    i.name  = remoteinput;
-                    i.value = userinput;
-                    f.appendChild(i);
-
-                    document.body.appendChild(f);
-                    f.submit();
-                }
-
-                if (localStorage.hasOwnProperty('token')) {
-                    customHeader('Authorization', localStorage.getItem('token'));
-                }
+                localStorage.setItem('token', data.token.token);
+                document.cookie = 'token=' + data.token.token;
+                console.log(document.cookie);
+                window.location = window.location;
             },
             error:   function (data, code) {
                 console.log(data, code);

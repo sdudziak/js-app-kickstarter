@@ -1,6 +1,6 @@
 {
   "comment-format": [
-    false,
+    true,
     "check-space"
   ],
   "extends":        "tslint:latest",

@@ -14,7 +14,7 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 export class PassportAuthentication implements IAuthenticationService {
 
     private passport: any;
-    private strategies: {[name: string]: IStrategy} = {};
+    private strategies: { [name: string]: IStrategy } = {};
 
     public addAuthStrategy(anStrategy: IStrategy): void {
         if (this.strategies[anStrategy.name()]) {
@@ -34,7 +34,7 @@ export class PassportAuthentication implements IAuthenticationService {
 
     public authenticate(user: User): Promise<Token> {
         return new Promise((resolve: Function, reject: Function) => {
-            let errors: {[strategyName: string]: any} = [];
+            let errors: { [strategyName: string]: any } = [];
             let errorsCounter: number = 0;
             let strategiesCount: Number = Object
                 .keys(this.strategies)
@@ -42,6 +42,7 @@ export class PassportAuthentication implements IAuthenticationService {
                 .length;
 
             for (const strategyName in this.strategies) {
+                if (!this.strategies.hasOwnProperty(strategyName)) continue;
                 const strategy: IStrategy = this.strategies[strategyName];
                 strategy
                     .authenticate(user)

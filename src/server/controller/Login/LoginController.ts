@@ -1,23 +1,23 @@
 import { Controller, Get, Post, TYPE } from 'inversify-express-utils';
 import * as express from 'express';
 
-import { provideNamed, inject } from '../ioc/ioc';
-import TAGS from '../constant/tags';
-import ROUTES from '../config/routes';
-import TYPES from '../constant/types';
-import { IUserService } from '../services/user/IUserService';
-import { User } from '../model/infrastructure/User';
-import { IAuthenticationService } from '../services/authentication/IAuthenticationService';
-import { Token } from '../services/authentication/model/Token';
-import { ICryptographicService } from '../services/cryptographic/ICryptographicService';
+import { provideNamed, inject } from '../../ioc/ioc';
+import TAGS from '../../constant/tags';
+import ROUTES from '../../config/routes';
+import TYPES from '../../constant/types';
+import { IUserService } from '../../services/user/IUserService';
+import { User } from '../../model/infrastructure/User';
+import { IAuthenticationService } from '../../services/authentication/IAuthenticationService';
+import { Token } from '../../services/authentication/model/Token';
+import { ICryptographicService } from '../../services/cryptographic/ICryptographicService';
 
 @provideNamed(TYPE.Controller, TAGS.LoginController)
 @Controller(ROUTES.authenticate)
 export class LoginController {
 
     public static ACTION = {
-        subscribe: '/signup',
-        login:     '/'
+        login:     '/',
+        subscribe: '/signup'
     };
 
     private userService: IUserService;
@@ -38,22 +38,27 @@ export class LoginController {
 
         if (!req.body.name || !req.body.password) {
             res.status(400).json({
-                message: "Missing one or both of required fields: name || password"
+                message: 'Missing one or both of required fields: name || password'
             });
             return;
         }
 
         this.userService
             .getUserByName(req.body.name)
-            .then((user: User) =>
-                this.cryptographicService.isPasswordValid(req.body.password, user.passwordHash) ?
-                    user : Error("Invalid password")
-            )
+            .then((user: User) => {
+                if (this.cryptographicService.isPasswordValid(req.body.password, user.passwordHash)) {
+                    return user;
+                }
+                throw new Error('Invalid password');
+            })
             .then((user: User) => this.authenticationService.authenticate(user))
-            .then((token: Token) => res.json({ message: "ok", token: token.toJson() }))
+            .then((token: Token) => {
+                req.session.token = token;
+                res.json({ message: 'ok', token: token.toJson() });
+            })
             .catch((reason: any) => res.status(401).json({
-                message: "Cannot log in. Reason: " + reason.toString(),
-                details: reason
+                details: reason,
+                message: 'Cannot log in. Reason: ' + reason.toString()
             }));
     }
 
@@ -62,7 +67,7 @@ export class LoginController {
 
         if (!req.body.name || !req.body.password || !req.body.mail) {
             res.status(400).json({
-                message: "Missing one or both of required fields: name | password | mail"
+                message: 'Missing one or both of required fields: name | password | mail'
             });
             return;
         }
@@ -86,13 +91,13 @@ export class LoginController {
                 }
                 return true;
             })
-            .then(()=> this.userService.newUser(new User(name, mail, passwordHash)))
+            .then(() => this.userService.newUser(new User(name, mail, passwordHash)))
             .then((user: User) => res.status(200).json({
                 message: "User created",
                 user:    {
                     id:   user._id,
-                    name: user.name,
-                    mail: user.mail
+                    mail: user.mail,
+                    name: user.name
                 }
 
             }))

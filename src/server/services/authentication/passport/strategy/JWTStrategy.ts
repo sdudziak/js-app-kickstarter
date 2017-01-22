@@ -12,6 +12,10 @@ import { provide, kernel } from '../../../../ioc/ioc'
 import * as config from '../../../../config/index';
 import { Token } from '../../model/Token';
 
+interface ICookieRequest extends Express.Request {
+    cookies: any;
+}
+
 @provide(TYPES.IStrategy)
 export class JwtStrategy implements IStrategy {
 
@@ -99,8 +103,6 @@ export class JwtStrategy implements IStrategy {
     }
 
     private fromCookie(fieldName: string) {
-        return (request: Express.Request) => {
-            return request.cookies[fieldName] ? request.cookies[fieldName] : null
-        }
+        return (request: ICookieRequest) => request.cookies[fieldName] ? request.cookies[fieldName] : null
     }
 }

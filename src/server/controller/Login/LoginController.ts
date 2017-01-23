@@ -11,6 +11,15 @@ import { IAuthenticationService } from '../../services/authentication/IAuthentic
 import { Token } from '../../services/authentication/model/Token';
 import { ICryptographicService } from '../../services/cryptographic/ICryptographicService';
 
+export interface ITokenAwareSession extends Express.Session {
+    token: Token;
+}
+
+export interface ISessionRequest extends Express.Request {
+    session: ITokenAwareSession;
+    body: any;
+}
+
 @provideNamed(TYPE.Controller, TAGS.LoginController)
 @Controller(ROUTES.authenticate)
 export class LoginController {
@@ -28,13 +37,13 @@ export class LoginController {
                        @inject(TYPES.IAuthenticationService) authenticationService: IAuthenticationService,
                        @inject(TYPES.ICryptographicService) cryptographicService: ICryptographicService) {
 
-        this.userService = userService;
+        this.userService           = userService;
         this.authenticationService = authenticationService;
-        this.cryptographicService = cryptographicService;
+        this.cryptographicService  = cryptographicService;
     }
 
     @Post(LoginController.ACTION.login)
-    public login(req: express.Request, res: express.Response): void {
+    public login(req: ISessionRequest, res: express.Response): void {
 
         if (!req.body.name || !req.body.password) {
             res.status(400).json({
@@ -54,7 +63,7 @@ export class LoginController {
             .then((user: User) => this.authenticationService.authenticate(user))
             .then((token: Token) => {
                 req.session.token = token;
-                res.json({ message: 'ok', token: token.toJson() });
+                res.json({message: 'ok', token: token.toJson()});
             })
             .catch((reason: any) => res.status(401).json({
                 details: reason,
@@ -72,8 +81,8 @@ export class LoginController {
             return;
         }
 
-        const name: string = req.body.name;
-        const mail: string = req.body.mail;
+        const name: string         = req.body.name;
+        const mail: string         = req.body.mail;
         const passwordHash: string = this.cryptographicService.generateHash(req.body.password);
 
         this.userService
@@ -102,7 +111,7 @@ export class LoginController {
 
             }))
             .catch((reason: Error) => res.status(401).json({
-                message: "Cannot create account. Reason: " + reason.toString()
+                message: "Cannot create account. " + reason.toString()
             }));
 
         // validate input

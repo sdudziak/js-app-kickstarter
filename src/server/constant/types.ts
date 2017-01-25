@@ -20,6 +20,9 @@ const TYPES = {
     IExceptionHandler:                      Symbol('IExceptionHandler'),
     IExceptionToRequestErrorMapper:         Symbol('IExceptionToRequestErrorMapper'),
     IExceptionToRequestErrorMapperStrategy: Symbol('IExceptionToRequestErrorMapperStrategy'),
+
+    IWorker:        Symbol('IWorker'),
+    IWorkerManager: Symbol('IWorkerManager'),
 };
 
 export default TYPES;

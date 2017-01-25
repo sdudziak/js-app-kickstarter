@@ -19,6 +19,7 @@ import '../initializer/ConfigPreBuildInitializer';
 import '../initializer/TemplatingInitializer';
 import '../initializer/EvenManagerInitializer'
 import '../initializer/SocketIOAuthenticationPostInstantiateInitializer';
+import '../initializer/WorkerManagerInitializer';
 
 // events
 import '../services/eventManager/MultipleProvidersEventManager';
@@ -29,6 +30,8 @@ import '../event/listener/SocketOnUserConnectedEventListener';
 
 // authentication strategies
 import '../services/authentication/passport/strategy/JWTStrategy';
+
+import '../services/application/WorkerManager/WorkerManager';
 
 // utils
 import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';

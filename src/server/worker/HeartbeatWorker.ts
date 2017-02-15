@@ -1,17 +1,13 @@
 import * as process from 'process';
 
-import { IWorker } from '../services/application/WorkerManager/IWorker';
-import { inject, provideSingleton } from '../ioc/ioc';
+import '../ioc/loader';
+
+import { kernel } from '../ioc/ioc';
 import TYPES from '../constant/types';
+import { ILogger } from '../services/logger/ILogger';
 
+const logger: ILogger = kernel.get<ILogger>(TYPES.ILogger);
 
-@provideSingleton(TYPES.IWorker)
-export class HeartbeatWorker implements IWorker {
-
-    public constructor() {
-        setInterval(() => console.log('I\'m alive!'), 1000);
-        process.on('exit', () => console.log('I quit!'));
-    }
-}
-
-exports = module.exports = new HeartbeatWorker();
+process.on('message', (message: string, callback: any) =>
+    logger.log(message)
+);

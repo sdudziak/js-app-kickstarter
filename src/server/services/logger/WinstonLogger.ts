@@ -1,26 +1,16 @@
-import * as winston from 'winston';
-
+import { inject, provide } from '../../ioc/ioc';
 import { ILogger } from './ILogger';
-import { provide } from '../../ioc/ioc';
+import { LIBRARIES } from '../../constant/libraries';
 import TYPES from '../../constant/types';
+import * as winston from 'winston';
 
 @provide(TYPES.ILogger)
 export class WinstonLogger implements ILogger {
 
     private logger: winston.LoggerInstance;
 
-    public constructor() {
-        this.logger = new winston.Logger({
-            exitOnError: false,
-            transports:  [new (winston.transports.Console)({
-                colorize:         true,
-                handleExceptions: true,
-                json:             false,
-                level:            'info',
-                prettyPrint:      true,
-                timestamp:        true
-            })]
-        });
+    public constructor(@inject(LIBRARIES.winston) winston: winston.LoggerInstance) {
+        this.logger = winston;
         this.logger.cli();
     }
 

@@ -7,6 +7,7 @@ import { IWorkerManager } from './IWorkerManager';
 import { provideSingleton, inject } from '../../../ioc/ioc';
 import TYPES from '../../../constant/types';
 import { ILogger } from '../../logger/ILogger';
+import { IEventManager } from '../../eventManager/IEventManager';
 
 @provideSingleton(TYPES.IWorkerManager)
 export class WorkerManager implements IWorkerManager {
@@ -14,7 +15,9 @@ export class WorkerManager implements IWorkerManager {
     private workersDir: string;
     private workers: ChildProcess[];
 
-    public constructor(@inject(TYPES.ILogger) private logger: ILogger) {
+    public constructor(
+        @inject(TYPES.IEventManager) private eventManager: IEventManager,
+        @inject(TYPES.ILogger) private logger: ILogger) {
         this.workersDir = path.resolve(__dirname, '..', '..', '..', 'worker');
         this.workers    = [];
     }
@@ -44,8 +47,10 @@ export class WorkerManager implements IWorkerManager {
     }
 
     private linkWorkerWithMainProcess(worker: ChildProcess): this {
-        process.on('exit', () => worker.emit('exit'));
+        process.on('exit', () => worker.kill());
         worker.on('exit', () => console.log('Finish my work!'));
+        // this.eventManager;
+        worker.send({blah: 'someData'});
         return this;
     }
 }

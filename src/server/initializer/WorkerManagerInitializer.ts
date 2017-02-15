@@ -18,6 +18,7 @@ export class WorkerManagerInitializer implements PostInstantiateInitializer {
     }
 
     public applyTo(server: Server): Promise<void> {
+        this.logger.log('[Initializer] Initializing Workers Manager');
         return this.workerManager.loadWorkers();
     }
 }

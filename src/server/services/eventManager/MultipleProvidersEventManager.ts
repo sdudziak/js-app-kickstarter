@@ -29,7 +29,7 @@ export class MultipleProvidersEventManager implements IEventManager {
         this.providers[provider.type()] = provider;
     }
 
-    initListeners(eventListeners: IEventListener[]): this {
+    public initListeners(eventListeners: IEventListener[]): this {
         eventListeners.forEach((eventListener: IEventListener) =>
             eventListener.getEventHandlers()
                 .forEach((eventHandler: EventHandler) =>
@@ -41,9 +41,8 @@ export class MultipleProvidersEventManager implements IEventManager {
 
     public emit(event: IEvent): void {
         if (!this.providers.hasOwnProperty(event.type())) {
-            throw new Error("Invalid event type!");
+            throw new Error('Invalid event type!');
         }
-        console.log(event);
         this.providers[event.type()].emit(event);
     }
 

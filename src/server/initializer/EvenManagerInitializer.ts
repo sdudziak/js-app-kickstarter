@@ -37,7 +37,7 @@ export class EvenManagerInitializer implements PostInstantiateInitializer {
             this.eventManager.initProviders(this.eventProviders);
             this.eventManager.initListeners(this.eventListeners);
             const _this = this;
-            this.socketIO.on("connection", function (socket: SocketIO.Socket) {
+            this.socketIO.on('connection', function (socket: SocketIO.Socket) {
                 (<SocketIOEventManager> _this.eventManager.getRegisteredEventProvider(EVENT_TYPES.socket))
                     .initSocketListeners(socket, _this.eventListeners);
             });

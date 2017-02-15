@@ -32,7 +32,7 @@ export class SocketIOEventManager implements IEventManagerProvider {
         // this.ioStatic.on(eventName, callback);
     }
 
-    initSocketListeners(socket: SocketIO.Socket, eventListeners: IEventListener[]): void {
+    public initSocketListeners(socket: SocketIO.Socket, eventListeners: IEventListener[]): void {
         eventListeners
             .filter((eventListener: IEventListener) => eventListener.eventType() === this.type())
             .forEach((eventListener: IEventListener) =>

@@ -1,7 +1,9 @@
+import '../container-config';
+
 // controllers
 import '../controller/IndexController';
-import '../controller/UserController';
 import '../controller/Login/LoginController';
+import '../controller/UserController';
 
 // services
 import '../services/application/ApplicationServer';
@@ -16,9 +18,9 @@ import '../services/user/UserService';
 
 import '../initializer/AuthenticationPreBuildInitializer';
 import '../initializer/ConfigPreBuildInitializer';
-import '../initializer/TemplatingInitializer';
 import '../initializer/EvenManagerInitializer'
 import '../initializer/SocketIOAuthenticationPostInstantiateInitializer';
+import '../initializer/TemplatingInitializer';
 import '../initializer/WorkerManagerInitializer';
 
 // events
@@ -34,7 +36,7 @@ import '../services/authentication/passport/strategy/JWTStrategy';
 import '../services/application/WorkerManager/WorkerManager';
 
 // utils
-import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';
 import '../utils/ExceptionHandler/ExpressExceptionHandler';
 import '../utils/ExceptionHandler/ExceptionToRequestMapper/ExceptionToRequestMapperStrategyDispatcher';
 import '../utils/ExceptionHandler/ExceptionToRequestMapper/PropertyProcessorExceptionToRequestErrorMapperStrategy';
+import '../utils/PersistenceClient/MongoDB/MongoPersistenceClient';

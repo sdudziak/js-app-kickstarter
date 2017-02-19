@@ -9,7 +9,7 @@ import { interfaces } from 'inversify-express-utils';
 import { interfaces as inversifyInterfaces } from 'inversify';
 import * as config from '../../config';
 import { ILogger, SEVERITY } from '../logger/ILogger';
-import { PostInstantiateInitializer } from './PostInstantiateInitializer';
+import { IPostInstantiateInitializer } from './IPostInstantiateInitializer';
 
 @provideSingleton(TYPES.ApplicationServer)
 export class ApplicationServer {
@@ -17,7 +17,7 @@ export class ApplicationServer {
 
     private express: interfaces.InversifyExpressServer;
     private preBuildInitializers: PreBuildInitializer[];
-    private postInstantiateInitializers: PostInstantiateInitializer[];
+    private postInstantiateInitializers: IPostInstantiateInitializer[];
     private expressRequestHandler: express.Application;
     private server: http.Server;
     private logger: ILogger;
@@ -36,7 +36,7 @@ export class ApplicationServer {
         this.initPreBuildInitializers(this.express)
             .then(() => this.instantiate(kernel))
             .then(() => {
-                this.postInstantiateInitializers = kernel.getAll<PostInstantiateInitializer>(TYPES.PostInstantiateInitializer);
+                this.postInstantiateInitializers = kernel.getAll<IPostInstantiateInitializer>(TYPES.IPostInstantiateInitializer);
             })
             .then(() => this.initPostInstantiateInitializers())
             .catch((reason: Error) => this.logger.log(reason.message, "error", reason));
@@ -72,7 +72,7 @@ export class ApplicationServer {
         return Promise.all(
             this
                 .postInstantiateInitializers
-                .map((initializer: PostInstantiateInitializer) => initializer.applyTo(this.server))
+                .map((initializer: IPostInstantiateInitializer) => initializer.applyTo(this.server))
         );
     }
 }

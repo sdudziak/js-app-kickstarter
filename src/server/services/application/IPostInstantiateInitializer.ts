@@ -1,5 +1,5 @@
 import {Server} from 'http'
 
-export interface PostInstantiateInitializer {
+export interface IPostInstantiateInitializer {
     applyTo(server: Server): Promise<void>;
 }

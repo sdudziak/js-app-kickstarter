@@ -1,12 +1,12 @@
-import { PostInstantiateInitializer } from '../services/application/PostInstantiateInitializer';
+import { IPostInstantiateInitializer } from '../services/application/IPostInstantiateInitializer';
 import { Server } from 'http';
 import { inject, provideSingleton } from '../ioc/ioc';
 import TYPES from '../constant/types';
 import { ILogger } from '../services/logger/ILogger';
 import { IWorkerManager } from '../services/application/WorkerManager/IWorkerManager';
 
-@provideSingleton(TYPES.PostInstantiateInitializer)
-export class WorkerManagerInitializer implements PostInstantiateInitializer {
+@provideSingleton(TYPES.IPostInstantiateInitializer)
+export class WorkerManagerInitializer implements IPostInstantiateInitializer {
 
     private logger: ILogger;
     private workerManager: IWorkerManager;

@@ -3,14 +3,14 @@ import { Server } from 'http'
 import { inject, multiInject, provideSingleton } from '../ioc/ioc';
 import TYPES from '../constant/types';
 import { EVENT_TYPES } from '../constant/events';
-import { PostInstantiateInitializer } from '../services/application/PostInstantiateInitializer';
+import { IPostInstantiateInitializer } from '../services/application/IPostInstantiateInitializer';
 import { IEventManager, IEventManagerProvider } from '../services/eventManager/IEventManager';
 import { IEventListener } from '../services/eventManager/IEventListener';
 import { ILogger } from '../services/logger/ILogger';
 import { SocketIOEventManager } from '../services/eventManager/provider/SocketIOEventManager';
 
-@provideSingleton(TYPES.PostInstantiateInitializer)
-export class EvenManagerInitializer implements PostInstantiateInitializer {
+@provideSingleton(TYPES.IPostInstantiateInitializer)
+export class EvenManagerInitializer implements IPostInstantiateInitializer {
 
     private eventManager: IEventManager;
     private socketIO: SocketIO.Server;

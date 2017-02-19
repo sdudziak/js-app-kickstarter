@@ -4,11 +4,11 @@ import { NextFunction } from 'express-serve-static-core';
 import { inject, provideSingleton } from '../ioc/ioc';
 import TYPES from '../constant/types';
 import * as config from '../config';
-import { PostInstantiateInitializer } from '../services/application/PostInstantiateInitializer';
+import { IPostInstantiateInitializer } from '../services/application/IPostInstantiateInitializer';
 import { ILogger } from '../services/logger/ILogger';
 
-@provideSingleton(TYPES.PostInstantiateInitializer)
-export class SocketIOAuthenticationPostInstantiateInitializer implements PostInstantiateInitializer {
+@provideSingleton(TYPES.IPostInstantiateInitializer)
+export class SocketIOAuthenticationPostInstantiateInitializer implements IPostInstantiateInitializer {
 
     private logger: ILogger;
     private socketIO: SocketIO.Server;

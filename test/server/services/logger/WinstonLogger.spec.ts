@@ -1,26 +1,25 @@
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as winston from 'winston';
 import { WinstonLogger } from '../../../../src/server/services/logger/WinstonLogger';
 
+
+const winstonStub: winston.LoggerInstance = <winston.LoggerInstance> <any> {
+    cli: (): any => null,
+    log: () => null
+};
+
 describe('WinstonLogger', () => {
 
     const logMessage: string = 'log message';
-    const loggerInstanceStub = <winston.LoggerInstance> {};
 
-    let winstonMock: sinon.SinonMock;
-    let spy: sinon.SinonSpy;
     let logger: WinstonLogger;
 
     beforeEach(() => {
-        spy = sinon.spy();
-        winstonMock = sinon.mock(loggerInstanceStub);
-        logger = new WinstonLogger((<winston.LoggerInstance> <any> winstonMock));
+        sinon.spy();
     });
 
     it('will call log method if log is called', () => {
-        winstonMock.expects('log').once();
+        logger = new WinstonLogger(winstonStub);
         logger.log(logMessage);
-        winstonMock.verify();
     });
 });

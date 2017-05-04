@@ -1,17 +1,17 @@
+import { Container as Kernel, inject, interfaces, multiInject } from 'inversify';
+import { autoProvide, makeFluentProvideDecorator, makeProvideDecorator } from 'inversify-binding-decorators';
+import { makeLoggerMiddleware, textSerializer } from 'inversify-logger-middleware';
 import 'reflect-metadata';
-import { Kernel, inject, interfaces, multiInject } from 'inversify';
 export { interfaces } from 'inversify';
 
-import { autoProvide, makeProvideDecorator, makeFluentProvideDecorator } from 'inversify-binding-decorators';
-import { makeLoggerMiddleware, textSerializer } from 'inversify-logger-middleware';
-let kernel: interfaces.Kernel = new Kernel();
+let kernel: interfaces.Container = new Kernel();
 
 if (process.env.NODE_ENV === 'development') {
     let logger = makeLoggerMiddleware(null, (entry) => console.log(textSerializer(entry)));
     kernel.applyMiddleware(logger);
 }
 
-let provide = makeProvideDecorator(kernel);
+let provide        = makeProvideDecorator(kernel);
 let fluentProvider = makeFluentProvideDecorator(kernel);
 
 let provideNamed = function (identifier: any, name: string) {

@@ -1,0 +1,27 @@
+api:
+  build: .
+  links:
+    - 'mongo:mongo'
+  environment:
+    NODE_ENV: 'development'
+  volumes:
+    - .:/app
+  ports:
+    - "0.0.0.0:8080:9000"
+  command: nodemon --delay 500ms ./dist/bootstrap.js
+
+mongo:
+  image: mvertes/alpine-mongo:latest
+  ports:
+    - "27017"
+  command: ["mongod"]
+
+jest:
+  build: .
+  volumes:
+    - .:/app
+  links:
+    - 'mongo:mongo'
+  command: nodemon --delay 500ms --exec 'npm test'
+  environment:
+    NODE_ENV: 'test'

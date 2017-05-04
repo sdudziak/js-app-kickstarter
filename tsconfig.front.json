@@ -14,6 +14,7 @@
     "removeComments":         true,
     "pretty":                 true,
     "experimentalDecorators": true,
+    "allowJs":                true,
     "skipLibCheck":           true
   },
   "include":         [

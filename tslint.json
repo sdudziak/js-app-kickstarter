@@ -3,54 +3,60 @@
     true,
     "check-space"
   ],
-  "extends":        "tslint:latest",
+  "extends": "tslint:latest",
   "rulesDirectory": [],
-  "rules":          {
-    "only-arrow-functions":   false,
-    "no-console":             true,
-    "class-name":             true,
-    "curly":                  false,
-    "eofline":                true,
-    "indent":                 [
+  "rules": {
+    "interface-over-type-literal": true,
+    "no-duplicate-super": true,
+    "no-reference": true,
+    "no-string-throw": true,
+    ""
+    "only-arrow-functions": false,
+    "no-console": true,
+    "class-name": true,
+    "curly": false,
+    "eofline": true,
+    "indent": [
       "spaces",
       true
     ],
-    "max-line-length":        [
+    "max-line-length": [
       true,
       140
     ],
-    "member-ordering":        [
-      true,
-      "public-before-private",
-      "static-before-instance",
-      "variables-before-functions"
-    ],
-    "no-arg":                 true,
-    "no-construct":           true,
-    "no-duplicate-key":       true,
-    "no-duplicate-variable":  true,
-    "no-empty":               true,
-    "no-eval":                true,
-    "no-namespace":           false,
+    "no-arg": true,
+    "no-construct": true,
+    "no-duplicate-key": true,
+    "no-duplicate-variable": true,
+    "no-empty": true,
+    "no-eval": true,
+    "no-namespace": false,
     "no-trailing-whitespace": true,
-    "no-unused-expression":   true,
-    "no-unused-variable":     true,
-    "no-unreachable":         true,
-    "no-use-before-declare":  true,
-    "one-line":               [
+    "no-unused-expression": true,
+    "no-unused-variable": true,
+    "no-unreachable": true,
+    "no-use-before-declare": true,
+    "align": true,
+    "interface-name": true,
+    "switch-default": true,
+    "member-access": true,
+    "newline-before-return": true,
+    "prefer-for-of": true,
+    "no-any": true,
+    "one-line": [
       true,
       "check-open-brace",
       "check-catch",
       "check-else",
       "check-whitespace"
     ],
-    "quotemark":              [
+    "quotemark": [
       true,
       "single"
     ],
-    "semicolon":              false,
-    "trailing-comma":         true,
-    "triple-equals":          true,
-    "variable-name":          false
+    "semicolon": false,
+    "trailing-comma": true,
+    "triple-equals": true,
+    "variable-name": false
   }
 }

@@ -2,18 +2,17 @@ import * as express from 'express';
 import * as http from 'http'
 import * as io from 'socket.io';
 
-import { provideSingleton, multiInject, inject } from '../../ioc/ioc';
-import TYPES from '../../constant/types';
-import { PreBuildInitializer } from './PreBuildInitializer';
-import { interfaces } from 'inversify-express-utils';
-import { interfaces as inversifyInterfaces } from 'inversify';
 import * as config from '../../config';
-import { ILogger, SEVERITY } from '../logger/ILogger';
-import { IPostInstantiateInitializer } from './IPostInstantiateInitializer';
+import {inject, multiInject, provideSingleton} from '../../ioc/ioc';
+import {PreBuildInitializer} from './PreBuildInitializer';
+import {interfaces} from 'inversify-express-utils';
+import {interfaces as inversifyInterfaces} from 'inversify';
+import {ILogger} from '../logger/ILogger';
+import {IPostInstantiateInitializer} from './IPostInstantiateInitializer';
+import TYPES from '../../constant/types';
 
 @provideSingleton(TYPES.ApplicationServer)
 export class ApplicationServer {
-
 
     private express: interfaces.InversifyExpressServer;
     private preBuildInitializers: PreBuildInitializer[];

@@ -1,4 +1,4 @@
-var tsconfig = require('./../tsconfig.front.json');
+var tsconfig = require('./tsconfig.front.json');
 
 var gulpConfig = {
     path:    {},

@@ -1,10 +1,10 @@
-import { provideSingleton, inject } from '../../ioc/ioc';
+import {provideSingleton, inject} from '../../ioc/ioc';
 import TYPES from '../../constant/types';
-import { IEventManager, IEventManagerProvider } from './IEventManager';
-import { IEvent } from './IEvent';
+import {IEventManager, IEventManagerProvider} from './IEventManager';
+import {IEvent} from './IEvent';
 import forEach = require('lodash/forEach');
-import { ILogger, SEVERITY } from '../logger/ILogger';
-import { IEventListener, EventHandler } from './IEventListener';
+import {ILogger, SEVERITY} from '../logger/ILogger';
+import {IEventListener, EventHandler} from './IEventListener';
 
 @provideSingleton(TYPES.IEventManager)
 export class MultipleProvidersEventManager implements IEventManager {

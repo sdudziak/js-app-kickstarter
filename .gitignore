@@ -5,11 +5,10 @@ node_modules/
 coverage/
 /dist/
 /src/**/*.js
+/src/**/*.jsx
 /test/**/*.js
-.dockerignore
-Dockerfile
 codeship-services.yml
 codeship-steps.yml
-docker-compose.yml
 !/src/**/assets/**/*
 !/package.json
+/jest_*/

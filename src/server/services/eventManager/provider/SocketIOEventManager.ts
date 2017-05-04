@@ -1,10 +1,10 @@
-import { IEventManagerProvider } from '../IEventManager';
-import { IEvent } from '../IEvent';
-import { provideNamedSingleton, inject } from '../../../ioc/ioc';
-import TYPES from '../../../constant/types';
+import { EVENT_TYPES } from '../../../constant/events';
 import TAGS from '../../../constant/tags';
-import { EVENT_TYPES }from '../../../constant/events';
+import TYPES from '../../../constant/types';
+import { inject, provideNamedSingleton } from '../../../ioc/ioc';
+import { IEvent } from '../IEvent';
 import { IEventListener } from '../IEventListener';
+import { IEventManagerProvider } from '../IEventManager';
 
 @provideNamedSingleton(TYPES.IEventManagerProvider, TAGS.SocketIOEventManagerProvider)
 export class SocketIOEventManager implements IEventManagerProvider {
@@ -37,12 +37,12 @@ export class SocketIOEventManager implements IEventManagerProvider {
             .filter((eventListener: IEventListener) => eventListener.eventType() === this.type())
             .forEach((eventListener: IEventListener) =>
                 eventListener.getEventHandlers()
-                    .forEach((eventHandler: Function) => ((eHandler: Function) => {
-                            socket.on(eventListener.eventName(), function (data: any) {
-                                eHandler.apply(data);
-                            })
-                        })(eventHandler)
-                    )
+                             .forEach((eventHandler: Function) => ((eHandler: Function) => {
+                                     socket.on(eventListener.eventName(), function (data: any) {
+                                         eHandler.apply(data);
+                                     })
+                                 })(eventHandler)
+                             )
             );
     }
 }

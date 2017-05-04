@@ -1,31 +1,32 @@
-const gulp        = require('gulp');
-const source      = require('vinyl-source-stream');
-const uglify      = require('gulp-uglify');
-const buffer      = require('vinyl-buffer');
-const notify      = require('gulp-notify');
-const nodemon     = require('gulp-nodemon');
-const livereload  = require('gulp-livereload');
-const typescript  = require('gulp-typescript');
-const sass        = require('gulp-sass');
-const webpack     = require('webpack-stream');
-const browserSync = require('browser-sync');
-const superstatic = require('superstatic');
+const gulp          = require('gulp');
+const source        = require('vinyl-source-stream');
+const uglify        = require('gulp-uglify');
+const buffer        = require('vinyl-buffer');
+const notify        = require('gulp-notify');
+const nodemon       = require('gulp-nodemon');
+const livereload    = require('gulp-livereload');
+const typescript    = require('gulp-typescript');
+const sass          = require('gulp-sass');
+const webpackStream = require('webpack-stream');
+const webpack2      = require('webpack');
+const browserSync   = require('browser-sync');
+const superstatic   = require('superstatic');
+const gutil         = require("gulp-util");
 
+const gulpConfig    = require('./gulpfile.config');
+const webpackConfig = require('./webpack.config');
+const path          = require("path");
 
-const gulpConfig    = require('./config/gulpfile.config');
-const webpackConfig = require('./config/webpack.config');
-
-const tsProject      = typescript.createProject('tsconfig.json', {declaration: true});
+const tsProject      = typescript.createProject('tsconfig.json');
 const tsProjectFront = typescript.createProject('tsconfig.front.json', {declaration: true});
 
 /* BACKEND */
 gulp.task(gulpConfig.tasks.backend.build, function () {
-    // instead of gulp.src(["src/**/*.ts", "src/**/**/*.ts"])
-    // lib, and lib/queries.
-    // except lib.d.ts. Maybe for future use:  { base: './src/' }
-    const tsResult = tsProject.src().pipe(tsProject());
-
-    return tsResult.js.pipe(gulp.dest(gulpConfig.path.buildDest));
+    return tsProject
+        .src()
+        .pipe(tsProject())
+        .js
+        .pipe(gulp.dest(gulpConfig.path.buildDest));
 });
 
 gulp.task(gulpConfig.tasks.backend.assets, function () {
@@ -38,11 +39,11 @@ gulp.task(gulpConfig.tasks.backend.assets, function () {
 
 /* FRONTEND */
 gulp.task(gulpConfig.tasks.frontend.build, function () {
-    // instead of gulp.src(["src/**/*.ts", "src/**/**/*.ts"])
-    // lib, and lib/queries.
-    // except lib.d.ts. Maybe for future use:  { base: './src/' }
-    var tsResult = tsProjectFront.src().pipe(tsProjectFront());
-    return tsResult.js.pipe(gulp.dest(gulpConfig.path.buildDestFront));
+    return tsProjectFront
+        .src()
+        .pipe(tsProjectFront())
+        .js
+        .pipe(gulp.dest(gulpConfig.path.buildDestFront));
 });
 
 
@@ -68,11 +69,14 @@ gulp.task(gulpConfig.tasks.frontend.js, function () {
 });
 
 // Basic usage
-gulp.task(gulpConfig.tasks.common.webpack, function () {
-    return gulp
-        .src(gulpConfig.webpack.entrypoint)
-        .pipe(webpack(webpackConfig))
-        .pipe(gulp.dest(gulpConfig.path.buildDestFront));
+gulp.task(gulpConfig.tasks.common.webpack, function (callback) {
+    webpackStream(webpackConfig, webpack2, function (err, stats) {
+        if (err) {
+            throw new gutil.PluginError('webpack', stats);
+        }
+        gutil.log('[webpack]', stats.toString());
+        callback();
+    });
 });
 
 gulp.task(gulpConfig.tasks.common.serve, () => {
